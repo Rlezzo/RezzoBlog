@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记）" />
+    <meta property="og:title" content="[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记）" />
+    <meta property="twitter:title" content="[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记） |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/unityfpscontroller4/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tutorials" title="Tutorials">
+                            Tutorials
+                        </a>
+                        
+                        <a class="tag" href="/tags/unity" title="Unity">
+                            Unity
+                        </a>
+                        
+                    </div>
+                    <h1>[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Saturday, February 19, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p><a href="https://rlezzo.github.io/post/unityfpscontroller3/">[Unity] ③第一人称视角控制器——交互（学习笔记）</a></p>
+<h1 id="脚步声">脚步声</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">需 求</th>
+<th style="text-align:center">功 能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">脚步声 开/关</td>
+<td style="text-align:center">bool：useFootsteps</td>
+</tr>
+<tr>
+<td style="text-align:center">不同播放频率</td>
+<td style="text-align:center">float baseStepSpeed = 0.6f（基础速率）float crouchStepMultipler = 1.5f（倍率）</td>
+</tr>
+<tr>
+<td style="text-align:center">不同地形播放不同脚步声</td>
+<td style="text-align:center">AudioClip[] grassClips = default（音频列表）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="脚步声功能开关">脚步声功能开关</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> useFootsteps = <span style="color:#ff79c6">true</span>;
+</span></span></code></pre></div><h2 id="播放频率">播放频率</h2>
+<p>假设站立行走，每隔0.6S播放一次脚步声，那么蹲下行走的间隔时间，就是站立的1.5倍，间隔更长，冲刺的是站立的0.6倍，间隔更短。</p>
+<p>用 GetCurrentOffset 存储当前间隔时间。
+footstepsTimer 从时间轴 0S 开始计时。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Footsteps Paramenters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 播放速度，看做音频播放间隔时间</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> baseStepSpeed = <span style="color:#bd93f9">0.6f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> crouchStepMultipler = <span style="color:#bd93f9">1.5f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> sprintStepMultipler = <span style="color:#bd93f9">0.6f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 计时器</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> footstepsTimer = <span style="color:#bd93f9">0f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 播放间隔</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> GetCurrentOffset =&gt; baseStepSpeed * (isCrouching ? crouchStepMultipler : IsSprinting ? sprintStepMultipler : <span style="color:#bd93f9">1.0f</span>);
+</span></span></code></pre></div><h2 id="播放列表">播放列表</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Footsteps Paramenters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 声源，哪个声源播放音频</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> AudioSource footstepsAudioSource = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 不同地面类型，播放不同的音频列表</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> AudioClip[] grassClips = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> AudioClip[] snowClips = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> AudioClip[] groundClips = <span style="color:#ff79c6">default</span>;
+</span></span></code></pre></div><hr>
+<h2 id="脚步声功能代码">脚步声功能代码</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            HandleMovementInput();
+</span></span><span style="display:flex;"><span>            HandleMouseLook();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canJump)
+</span></span><span style="display:flex;"><span>                HandleJump();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canCrouch)
+</span></span><span style="display:flex;"><span>                HandleCrouch();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canUseHeadbob)
+</span></span><span style="display:flex;"><span>                HandleHeadbob();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canZoom)
+</span></span><span style="display:flex;"><span>                HandleZoom();
+</span></span><span style="display:flex;"><span>                //
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (useFootsteps)
+</span></span><span style="display:flex;"><span>                HandleFootsteps();
+</span></span><span style="display:flex;"><span>                //
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>在地面时，且有移动输入，才播放脚步声。</p>
+<p>当timer小于等于0的时候，相当于不在CD时间内，就可以根据射线探测到的地面类型播放对应的声音。
+如下图，在②往回走时，这段一直处在CD时间，所以不播放声音，如此往复。
+
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b0af4d5e57bf4ff6869aef8b2408e221~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleFootsteps()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 不在地面，或者没有移动输入</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (!isGrounded) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (moveInput == Vector2.zero) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        footstepsTimer -= Time.deltaTime;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (footstepsTimer &lt;= <span style="color:#bd93f9">0f</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 探测脚下的地面类型，播放音频</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (Physics.Raycast(playerCamera.transform.position, Vector3.down, <span style="color:#ff79c6">out</span> RaycastHit hit, <span style="color:#bd93f9">3f</span>))
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">switch</span> (hit.collider.tag)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">case</span> <span style="color:#f1fa8c">&#34;Footsteps/Grass&#34;</span>:
+</span></span><span style="display:flex;"><span>                        <span style="color:#6272a4">// 从 grassClips 中随机选择一条播放</span>
+</span></span><span style="display:flex;"><span>                        footstepsAudioSource.PlayOneShot(
+</span></span><span style="display:flex;"><span>                        grassClips[UnityEngine.Random.Range(<span style="color:#bd93f9">0</span>, grassClips.Length - <span style="color:#bd93f9">1</span>)]);
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">case</span> <span style="color:#f1fa8c">&#34;Footsteps/Snow&#34;</span>:
+</span></span><span style="display:flex;"><span>                        footstepsAudioSource.PlayOneShot(
+</span></span><span style="display:flex;"><span>                        snowClips[UnityEngine.Random.Range(<span style="color:#bd93f9">0</span>, snowClips.Length - <span style="color:#bd93f9">1</span>)]);
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">default</span>:
+</span></span><span style="display:flex;"><span>                        footstepsAudioSource.PlayOneShot(groundClips[UnityEngine.Random.Range(
+</span></span><span style="display:flex;"><span>                        <span style="color:#bd93f9">0</span>, groundClips.Length - <span style="color:#bd93f9">1</span>)]);
+</span></span><span style="display:flex;"><span>                        <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 播放间隔，相当于进入CD</span>
+</span></span><span style="display:flex;"><span>            footstepsTimer = GetCurrentOffset;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="脚步声地面tag添加">脚步声、地面TAG添加</h2>
+<p>「player」加入音源。</p>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bb2d5f0d9174428d8bf564269aaa1e4f~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>Tag里加入「Footsteps/Grass」 和 「Footsteps/Snow」。
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ca5c2d0740614c8fb230bc016a8f0547~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>可以从unity商店，下载免费的脚步声资源。</p>
+<p>
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3eaadd7544ed4d92b1233bbb70ec73e3~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>记得将「Audio Source」添加到箭头指向位置，然后将音频片段拖拽到画圈的位置。
+
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6c5a11f4239f4b54bb82dcbd723b5a4d~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>然后添加一些地面，将TAG修改为对应的TAG，音频就能正确播放了。
+
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a68d4a8ff3c34581be9a942429debb68~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e75f6058beb64f6da064cd9e1376c63e~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="血量系统">血量系统</h1>
+<p>这里用的是经典呼吸回血大法。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">需 求</th>
+<th style="text-align:center">功 能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">血条</td>
+<td style="text-align:center">float currentHealth（当前血量）float maxHealth（血量上限）</td>
+</tr>
+<tr>
+<td style="text-align:center">呼吸回血协程</td>
+<td style="text-align:center">Coroutine regeneratingHealth</td>
+</tr>
+<tr>
+<td style="text-align:center">协程单次回血量</td>
+<td style="text-align:center">healthValueIncrement = 3f</td>
+</tr>
+<tr>
+<td style="text-align:center">协程单次回血后等待时间</td>
+<td style="text-align:center">healthTimeIncrement = 0.1f</td>
+</tr>
+<tr>
+<td style="text-align:center">受伤害开始回血前等待时间</td>
+<td style="text-align:center">timeBeforeHealthRengeStarts = 3f</td>
+</tr>
+</tbody>
+</table>
+<p>掉血 -&gt; 启动呼吸回血协程 -&gt; 等待3S -&gt; 每回血3点，等待0.1S。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Health Paramenters&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> maxHealth = <span style="color:#bd93f9">100f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 开始回血前，等待3秒</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> timeBeforeHealthRengeStarts = <span style="color:#bd93f9">3f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 每次单位回血量</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> healthValueIncrement = <span style="color:#bd93f9">3f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 单位回血等待间隔</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> healthTimeIncrement = <span style="color:#bd93f9">0.1f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> currentHealth;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 回血的协程</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Coroutine regeneratingHealth;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> ApplyDamage(<span style="color:#8be9fd">float</span> damage)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 降低生命值，收到伤害掉血</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 启动协程呼吸回血</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> KillPlayer()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 血量归零</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 停止回血协程</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 死亡后执行的操作</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> IEnumerator RegenerateHealth()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 回血前等待CD</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 回血</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>收到伤害调用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> ApplyDamage(<span style="color:#8be9fd">float</span> damage)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 降低生命值</span>
+</span></span><span style="display:flex;"><span>        currentHealth -= damage;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (currentHealth &lt;= <span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>            KillPlayer();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (regeneratingHealth != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 回血过程中受伤，重新等待三秒呼吸回血</span>
+</span></span><span style="display:flex;"><span>            StopCoroutine(regeneratingHealth);
+</span></span><span style="display:flex;"><span>       
+</span></span><span style="display:flex;"><span>        regeneratingHealth = StartCoroutine(RegenerateHealth());
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>player死亡执行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> KillPlayer()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 玩家死亡状态</span>
+</span></span><span style="display:flex;"><span>        currentHealth = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (regeneratingHealth != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>            StopCoroutine(regeneratingHealth);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 死亡后的处理,比如enable一些东西</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#f1fa8c">&#34;DEAD&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>回血协程：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> IEnumerator RegenerateHealth()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> WaitForSeconds(timeBeforeHealthRengeStarts);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        WaitForSeconds timeToWait = <span style="color:#ff79c6">new</span> WaitForSeconds(healthTimeIncrement);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (currentHealth &lt; maxHealth)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentHealth += healthValueIncrement;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (currentHealth &gt; maxHealth)
+</span></span><span style="display:flex;"><span>                currentHealth = maxHealth;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> timeToWait;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 回血协程执行完毕，变量设为空</span>
+</span></span><span style="display:flex;"><span>        regeneratingHealth = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="显示血量">显示血量</h2>
+<p>在「Inspector」中，新建一个空「Object」，右键新建「UI」-&gt; 「Text - TextMeshPro」。
+
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d338c77e0a0946d89958fd931896cbe1~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2e7d5c891f6e4ac4b006e4f67e1d5b2d~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>新建一个script。
+
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4e2fa3da8f94aa8b9e5c67367a031d2~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> TMPro;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">UI</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> TextMeshProUGUI healthText = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 显示血量，传什么血量文本框显示什么血量</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> UpdateHealth(<span style="color:#8be9fd">float</span> currentHealth)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        healthText.text = <span style="color:#f1fa8c">&#34;Health: &#34;</span> + currentHealth.ToString(<span style="color:#f1fa8c">&#34;00&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>创建一个伤害方块：玩家的碰撞体进入到伤害方块的碰撞体时，调用「PlayerController」的 ApplyDamage() 方法。</p>
+<p>
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4944672a80944393959883cd09dbde46~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+红色箭头记得开启。
+
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cd1525d7237549f0a45ba322f709f379~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">LavaDamage</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> damage = <span style="color:#bd93f9">15f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnTriggerEnter(Collider other)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (other.CompareTag(<span style="color:#f1fa8c">&#34;Player&#34;</span>)){
+</span></span><span style="display:flex;"><span>            PlayerController.OnTakeDamage(damage);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="其它script要怎么调用playercontroller的private方法呢">其它script要怎么调用「PlayerController」的private方法呢？</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnTakeDamage;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// PlayerController 脚本启用时</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnEnable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 绑定委托，方法指针</span>
+</span></span><span style="display:flex;"><span>        OnTakeDamage += ApplyDamage;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnDisable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 取消委托</span>
+</span></span><span style="display:flex;"><span>        OnTakeDamage -= ApplyDamage;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>这样，当 「LavaDamage」调用「PlayerController」的 public static Action<!-- raw HTML omitted --> 变量的时候，PlayerController.OnTakeDamage(damage)， 相当于把伤害作为参赛，传给了「PlayerController」的 ApplyDamage() 方法。可以理解为C++方法指针。</p>
+<p>Action 委托 ：封装一个方法，该方法不具有参数并且不返回值。
+详细可以去了解委托相关知识。</p>
+<hr>
+<p>同理，再添加两个委托：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnDamage;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnHeal;
+</span></span></code></pre></div><p>需要「PlayerController」向UI传递血量参数，并修改文本内容，就在UI脚本里，委托绑定UI的UpdateHealth方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">UI</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> TextMeshProUGUI healthText = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnEnable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        PlayerController.OnDamage += UpdateHealth;
+</span></span><span style="display:flex;"><span>        PlayerController.OnHeal += UpdateHealth;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnDisable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        PlayerController.OnDamage -= UpdateHealth;
+</span></span><span style="display:flex;"><span>        PlayerController.OnHeal -= UpdateHealth;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> UpdateHealth(<span style="color:#8be9fd">float</span> currentHealth)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        healthText.text = <span style="color:#f1fa8c">&#34;Health: &#34;</span> + currentHealth.ToString(<span style="color:#f1fa8c">&#34;00&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>OnDamage?.Invoke，？是检测是否为空，OnDamage是否绑定了 currentHealth 委托，如果未绑定就currentHealth，没绑定不调用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> ApplyDamage(<span style="color:#8be9fd">float</span> damage)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        currentHealth -= damage;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 传递受伤害后血量，显示血量</span>
+</span></span><span style="display:flex;"><span>        OnDamage?.Invoke(currentHealth);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// ...以下省略</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>OnHeal?.Invoke(currentHealth)同理，传递回血后被改变的血量。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> IEnumerator RegenerateHealth()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> WaitForSeconds(timeBeforeHealthRengeStarts);
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>        WaitForSeconds timeToWait = <span style="color:#ff79c6">new</span> WaitForSeconds(healthTimeIncrement);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (currentHealth &lt; maxHealth)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentHealth += healthValueIncrement;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (currentHealth &gt; maxHealth)
+</span></span><span style="display:flex;"><span>                currentHealth = maxHealth;
+</span></span><span style="display:flex;"><span>        //
+</span></span><span style="display:flex;"><span>            OnHeal?.Invoke(currentHealth);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">//    </span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> timeToWait;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        regeneratingHealth = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h1 id="完整代码">完整代码</h1>
+<p>用 Action 要加上 using System, 所以脚步声 Random.Range 前需要变成 UnityEngine.Random.Range。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{    
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Health Paramenters&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">        [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> maxHealth = <span style="color:#bd93f9">100f</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 开始回血前，等待3秒</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">        [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> timeBeforeHealthRengeStarts = <span style="color:#bd93f9">3f</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 每次单位回血量</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">        [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> healthValueIncrement = <span style="color:#bd93f9">3f</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 单位回血等待间隔</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">        [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> healthTimeIncrement = <span style="color:#bd93f9">0.1f</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> currentHealth;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 回血的协程</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">private</span> Coroutine regeneratingHealth;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnTakeDamage;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnDamage;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Action&lt;<span style="color:#8be9fd">float</span>&gt; OnHeal;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Health</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnEnable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 绑定委托，方法指针</span>
+</span></span><span style="display:flex;"><span>        OnTakeDamage += ApplyDamage;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnDisable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 取消委托</span>
+</span></span><span style="display:flex;"><span>        OnTakeDamage -= ApplyDamage;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>     <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> Awake()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Health</span>
+</span></span><span style="display:flex;"><span>        currentHealth = maxHealth;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> ApplyDamage(<span style="color:#8be9fd">float</span> damage)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        currentHealth -= damage;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        OnDamage?.Invoke(currentHealth);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (currentHealth &lt;= <span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>            KillPlayer();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (regeneratingHealth != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 恢复过程中受伤，重新等待三秒呼吸回血</span>
+</span></span><span style="display:flex;"><span>            StopCoroutine(regeneratingHealth);
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        regeneratingHealth = StartCoroutine(RegenerateHealth());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> KillPlayer()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 玩家死亡状态</span>
+</span></span><span style="display:flex;"><span>        currentHealth = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (regeneratingHealth != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>            StopCoroutine(regeneratingHealth);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 死亡后的处理,比如enable一些东西</span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#f1fa8c">&#34;DEAD&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> IEnumerator RegenerateHealth()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> WaitForSeconds(timeBeforeHealthRengeStarts);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        WaitForSeconds timeToWait = <span style="color:#ff79c6">new</span> WaitForSeconds(healthTimeIncrement);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (currentHealth &lt; maxHealth)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentHealth += healthValueIncrement;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (currentHealth &gt; maxHealth)
+</span></span><span style="display:flex;"><span>                currentHealth = maxHealth;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            OnHeal?.Invoke(currentHealth);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> timeToWait;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 回血协程执行完毕，变量设为空</span>
+</span></span><span style="display:flex;"><span>        regeneratingHealth = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">LavaDamage</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> damage = <span style="color:#bd93f9">15f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnTriggerEnter(Collider other)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (other.CompareTag(<span style="color:#f1fa8c">&#34;Player&#34;</span>)){
+</span></span><span style="display:flex;"><span>            PlayerController.OnTakeDamage(damage);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> TMPro;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">UI</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> TextMeshProUGUI healthText = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnEnable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        PlayerController.OnDamage += UpdateHealth;
+</span></span><span style="display:flex;"><span>        PlayerController.OnHeal += UpdateHealth;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnDisable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        PlayerController.OnDamage -= UpdateHealth;
+</span></span><span style="display:flex;"><span>        PlayerController.OnHeal -= UpdateHealth;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> Start()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        UpdateHealth(<span style="color:#bd93f9">100f</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> UpdateHealth(<span style="color:#8be9fd">float</span> currentHealth)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        healthText.text = <span style="color:#f1fa8c">&#34;Health: &#34;</span> + currentHealth.ToString(<span style="color:#f1fa8c">&#34;00&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/layerandlayermask/" data-toggle="tooltip" data-placement="top" title="[Unity]Layer &amp; LayerMask 简述">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/unityfpscontroller5/" data-toggle="tooltip" data-placement="top" title="[Unity] ⑤第一人称视角控制器——耐力值系统、门的交互（学习笔记）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

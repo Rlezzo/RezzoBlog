@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips on Rezzo Blog</title>
+    <link>https://rlezzo.github.io/categories/tips/</link>
+    <description>Recent content in Tips on Rezzo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Apr 2023 02:26:50 +0800</lastBuildDate>
+    <atom:link href="https://rlezzo.github.io/categories/tips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Let&#39;s Make a First Person Game in Unity 学习笔记(一）</title>
+      <link>https://rlezzo.github.io/post/newfpscontroller/</link>
+      <pubDate>Wed, 19 Apr 2023 02:26:50 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/newfpscontroller/</guid>
+      <description>原视频地址 （一）利用unity的input system实现基础的FPS人物控制 安装最新的input system 如图｢Window｣-&amp;gt;｢Pack</description>
+    </item>
+    <item>
+      <title>[Unity] ⑤第一人称视角控制器——耐力值系统、门的交互（学习笔记）</title>
+      <link>https://rlezzo.github.io/post/unityfpscontroller5/</link>
+      <pubDate>Wed, 23 Feb 2022 00:03:52 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontroller5/</guid>
+      <description>[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记） 耐力值系统 需 求 功 能 耐力值系统 开/关 bool useStamina 耐力条 float maxStamina（最大耐力值）flo</description>
+    </item>
+    <item>
+      <title>[Unity] ④第一人称视角控制器——脚步声、血量系统（学习笔记）</title>
+      <link>https://rlezzo.github.io/post/unityfpscontroller4/</link>
+      <pubDate>Sat, 19 Feb 2022 22:38:49 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontroller4/</guid>
+      <description>[Unity] ③第一人称视角控制器——交互（学习笔记） 脚步声 需 求 功 能 脚步声 开/关 bool：useFootsteps 不同播放频率 float baseStepSpeed = 0.6f（基础速率）</description>
+    </item>
+    <item>
+      <title>[Unity]Layer &amp; LayerMask 简述</title>
+      <link>https://rlezzo.github.io/post/layerandlayermask/</link>
+      <pubDate>Sat, 19 Feb 2022 22:36:34 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/layerandlayermask/</guid>
+      <description>Layer 编辑器里的layer（总共32层）： 就像PS里的图层，帮助你通过分层，层与层不会互相干扰。 LayerMask layer之所以是32层，是因为他是用int3</description>
+    </item>
+    <item>
+      <title>[Unity] ③第一人称视角控制器——交互（学习笔记）</title>
+      <link>https://rlezzo.github.io/post/unityfpscontroller3/</link>
+      <pubDate>Sat, 19 Feb 2022 22:32:11 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontroller3/</guid>
+      <description>前一篇[Unity] ②第一人称视角控制器——开镜、头部摆动、斜面滑落（学习笔记） 想要实现的效果：从屏幕准心，发射一条射线，能获取第一个击中的</description>
+    </item>
+    <item>
+      <title>[Unity] ②第一人称视角控制器——开镜、头部摆动、斜面滑落（学习笔记）</title>
+      <link>https://rlezzo.github.io/post/unityfpscontroller2/</link>
+      <pubDate>Sat, 12 Feb 2022 21:06:59 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontroller2/</guid>
+      <description>第一部分： [Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记） 开镜 首先是是否能执行开镜的开关，然后是按键设定。 需要开镜前后的FOV，「de</description>
+    </item>
+    <item>
+      <title>[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记）</title>
+      <link>https://rlezzo.github.io/post/unityfpscontroller1/</link>
+      <pubDate>Tue, 25 Jan 2022 00:26:06 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontroller1/</guid>
+      <description>在油管上找到一个很详细的Unity FPS Controller Unity Tutorial，决定跟着这个系列重新做了。 第一人称视角移动 按照这个教程，修改了一部分代码。 public class PlayerController :</description>
+    </item>
+    <item>
+      <title>[Unity] 第一人称视角及移动控制</title>
+      <link>https://rlezzo.github.io/post/unityfpscontrol/</link>
+      <pubDate>Thu, 13 Jan 2022 23:56:20 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/unityfpscontrol/</guid>
+      <description>RigidBody 实现 第一人称鼠标视角控制 目标： ①实现上下看 ②实现左右看 ③将视角限制在合理的范围（上下不超过90°） 新建Player ①先捏个人，「Hiera</description>
+    </item>
+    <item>
+      <title>[Bat] bat脚本实现文件批量重命名操作</title>
+      <link>https://rlezzo.github.io/post/batrename/</link>
+      <pubDate>Fri, 31 Dec 2021 16:56:22 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/batrename/</guid>
+      <description>批量删除相同前缀 @echo off title 批量删除前缀名 echo. echo 本批处理可批量删除前缀名 echo. echo.&amp;amp;set /p strtemp3= 请输入要删除前缀的文件类型: echo.&amp;amp;set /p strtemp2= 请输入要删除的前缀字符串: setlocal enabledelayedexpansion for /f</description>
+    </item>
+    <item>
+      <title>C# 常用排序算法实现</title>
+      <link>https://rlezzo.github.io/post/csharpalogrithm/</link>
+      <pubDate>Thu, 23 Dec 2021 22:11:28 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/csharpalogrithm/</guid>
+      <description>theme: vuepress 图出处：Leetcode图解算法数据结构 平均时间复杂度O(n^2) 下面排序算法中用到的Swap函数 public void Swap(int[] arr, int a, int b) { // 不能同一个变量，异</description>
+    </item>
+    <item>
+      <title>C# IComparable 和 IComparer</title>
+      <link>https://rlezzo.github.io/post/csharpicomparableandicomparer/</link>
+      <pubDate>Thu, 23 Dec 2021 21:46:58 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/csharpicomparableandicomparer/</guid>
+      <description>using System; using System.Collections.Generic; namespace HelloWorldApplication { class HelloWorld { static void Main(string[] args) { Student stu1 = new Student(8, &amp;#34;c&amp;#34;); Student stu2 = new Student(10, &amp;#34;a&amp;#34;); Student stu3 = new Student(24, &amp;#34;b&amp;#34;); List&amp;lt;Student&amp;gt; list = new List&amp;lt;Student&amp;gt;(); list.Add(stu3); list.Add(stu2); list.Add(stu1); foreach(Student stu in list) { Console.WriteLine($&amp;#34;name: {stu.name}; age: {stu.age}&amp;#34;); } Console.WriteLine(&amp;</description>
+    </item>
+    <item>
+      <title>Git SSH 配置</title>
+      <link>https://rlezzo.github.io/post/gitssh/</link>
+      <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://rlezzo.github.io/post/gitssh/</guid>
+      <description>1.查看是否配置过密匙 cd ~/.ssh 不加cd，就是看存不存在 .ssh 文件夹 加cd，如果存在这个文件夹，就直接跳转到这个文件夹 如果不存在这个文件夹，会显示 No such</description>
+    </item>
+    <item>
+      <title>保姆级免费建博客教程①</title>
+      <link>https://rlezzo.github.io/post/howtocreatblog1/</link>
+      <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://rlezzo.github.io/post/howtocreatblog1/</guid>
+      <description>Part One 免费制作自己的博客！手把手保姆级教学！ 第二部分 点击跳转 第一步：申请一个GitHub账号 够宝宝吧，从申请账号开始 点击GitHub ： 点击右上</description>
+    </item>
+    <item>
+      <title>保姆级免费建博客教程②</title>
+      <link>https://rlezzo.github.io/post/howtocreatblog2/</link>
+      <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://rlezzo.github.io/post/howtocreatblog2/</guid>
+      <description>Part Two 免费制作自己的博客！手把手保姆级教学！ 第一部分 点击跳转 前期准备工作做好以后，文件夹应该是这个状态 进入blog文件夹 右键，点击Git Bash He</description>
+    </item>
+  </channel>
+</rss>

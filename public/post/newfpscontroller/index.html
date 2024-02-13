@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="Let&#39;s Make a First Person Game in Unity 学习笔记(一）" />
+    <meta property="og:title" content="Let&#39;s Make a First Person Game in Unity 学习笔记(一）" />
+    <meta property="twitter:title" content="Let&#39;s Make a First Person Game in Unity 学习笔记(一）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Let&#39;s Make a First Person Game in Unity 学习笔记(一） |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/newfpscontroller/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tutorials" title="Tutorials">
+                            Tutorials
+                        </a>
+                        
+                        <a class="tag" href="/tags/unity3d" title="Unity3d">
+                            Unity3d
+                        </a>
+                        
+                    </div>
+                    <h1>Let&#39;s Make a First Person Game in Unity 学习笔记(一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Wednesday, April 19, 2023
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p><a href="https://www.youtube.com/watch?v=rJqP5EesxLk&amp;list=PLGUw8UNswJEOv8c5ZcoHarbON6mIEUFBC">原视频地址</a></p>
+<p>（一）利用unity的input system实现基础的FPS人物控制</p>
+<h1 id="安装最新的input-system">安装最新的input system</h1>
+<p>如图｢Window｣-&gt;｢Package Manager｣中找到并下载安装。</p>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/171369be68654d5cb00bd629f654ca96~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="创建player">创建player</h1>
+<p>创建一个胶囊体，并将相机作为其子物体，将胶囊体自带的collider替换为｢Character Controller｣。</p>
+<p>
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c8cc10dcec9d4a5ea81269a46937ec26~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/005b052d55f1492db0e1c24898e3bdfa~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="创建input-actions完成输入映射">创建Input Actions，完成输入映射</h1>
+<p>在文件夹中，右键｢create｣-&gt;Input Actions，创建一个Input Action，Csharp脚本是之后自动生成的。</p>
+<p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40af702c18eb4581a752e77c5155bef1~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/973e6853b0bf45b39ac8c821feba77ad~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>如图所示进行按键的绑定：
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d1b10eb44e6e4724ad8318c334a2d126~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h2 id="movement">Movement</h2>
+<p>WASD移动，Action Type是Value类型，Control Type是Vector 2，也就是x和y轴的输入。当按ad的时候，人物左右移动，输入的就是x轴数据，人物也在对应的x轴左右移动。Value值[-1，1]。WASD和LeftStick并列，键盘和手柄左摇杆都能进行相同的操作。</p>
+<p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b306994a5fb3463e9651fafe00a6e383~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h2 id="jump键">Jump键</h2>
+<p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aa351e92f4134342a27cfafb973e3d8d~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h2 id="鼠标第一人称视角查看">鼠标第一人称视角查看</h2>
+<p>也是x,y轴的移动，所以输入也是vector 2。
+
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/61cf8442e2a642c8b10b57b4727769b0~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h2 id="最后保存">最后保存</h2>
+<p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c45aeedcdaad4f118562224f0c78938f~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="有关移动的脚本">有关移动的脚本</h1>
+<h2 id="实现player移动的脚本">实现player移动的脚本</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerMotor</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 角色控制器组件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> CharacterController controller;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 角色速度向量</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Vector3 playerVelocity;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 人物移动速度设定</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> speed = <span style="color:#bd93f9">5f</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> isGround;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">float</span> gravity = -<span style="color:#bd93f9">9.8f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">float</span> jumpHeight = <span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Start is called before the first frame update</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Start()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        controller = GetComponent&lt;CharacterController&gt;();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Update is called once per frame</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        isGround = controller.isGrounded;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 接收inputManager脚本传递的input数据并实现效果</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> ProcessMove(Vector2 input)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Input储存为移动向量</span>
+</span></span><span style="display:flex;"><span>        Vector3 moveDirection = Vector3.zero;
+</span></span><span style="display:flex;"><span>        moveDirection.x = input.x;
+</span></span><span style="display:flex;"><span>        moveDirection.z = input.y;
+</span></span><span style="display:flex;"><span>        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">//重力模拟和接地判定</span>
+</span></span><span style="display:flex;"><span>        playerVelocity.y += gravity * Time.deltaTime;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span>(isGround &amp;&amp; playerVelocity.y &lt; <span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            playerVelocity.y = -<span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        controller.Move(playerVelocity * Time.deltaTime);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 跳跃</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> Jump()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (isGround)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            playerVelocity.y = Mathf.Sqrt(jumpHeight * -<span style="color:#bd93f9">3.0f</span> * gravity);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="处理移动的输入">处理移动的输入</h2>
+<p>
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4a5c5577a8e54595b530eb246f97df3c~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/945a1a02da354ff0b0b94f778fd22b3e~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> UnityEngine.InputSystem;  <span style="color:#6272a4">//_______________________________命名空间导入</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">InputManager</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 对应的变量</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> PlayerInput playerInput; 
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> PlayerInput.OnFootActions onFoot; 
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> PlayerMotor playerMotor;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Awake() 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 你设定的playerInput Actions</span>
+</span></span><span style="display:flex;"><span>        playerInput = <span style="color:#ff79c6">new</span> PlayerInput(); 
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 你设定的playerInput Actions 中的onFoot </span>
+</span></span><span style="display:flex;"><span>        onFoot = playerInput.OnFoot; 
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 处理移动的脚本</span>
+</span></span><span style="display:flex;"><span>        playerMotor = GetComponent&lt;PlayerMotor&gt;();
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 处理jump交互，performed可以当做Input.KeyDown()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// ctx（上下文），记录你按下跳跃键，unity检测到你按下、持续按住、松开跳跃键的一系列信息</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 按下跳跃键的时候，调用跳跃方法</span>
+</span></span><span style="display:flex;"><span>        onFoot.Jump.performed += ctx =&gt; playerMotor.Jump();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 启/禁用脚本的操作</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnEnable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        onFoot.Enable();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> OnDisable()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        onFoot.Disable();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> FixedUpdate()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//用fixedupdate处理移动，不受帧数影响</span>
+</span></span><span style="display:flex;"><span>        playerMotor.ProcessMove(onFoot.Movement.ReadValue&lt;Vector2&gt;());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="处理查看操作">处理查看操作</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">using</span> UnityEngine;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerLook</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> Camera mainCam;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> xRotation = <span style="color:#bd93f9">0f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">float</span> xSensitivity = <span style="color:#bd93f9">30f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">float</span> ySensitivity = <span style="color:#bd93f9">30f</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> ProcessLook(Vector2 input)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> mouseX = input.x;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> mouseY = input.y;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 计算上下看的角度</span>
+</span></span><span style="display:flex;"><span>        xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
+</span></span><span style="display:flex;"><span>        xRotation = Mathf.Clamp(xRotation, -<span style="color:#bd93f9">90f</span>, <span style="color:#bd93f9">90f</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// camera应用旋转</span>
+</span></span><span style="display:flex;"><span>        mainCam.transform.localRotation = Quaternion.Euler(xRotation, <span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 左右旋转转身体</span>
+</span></span><span style="display:flex;"><span>        transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>InputManager处理</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">//...省略...</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">InputManager</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">//...省略...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> PlayerLook look;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Awake()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">//...省略...</span>
+</span></span><span style="display:flex;"><span>        look = GetComponent&lt;PlayerLook&gt;();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        look.ProcessLook(onFoot.Look.ReadValue&lt;Vector2&gt;());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">//...省略...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="player应用脚本完成">Player应用脚本，完成</h1>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4b969c4d967b44e89977e23edc034e97~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="小结">小结</h1>
+<p>Unity的Input System将所有输入设备和输入事件表示为Action的集合。Action是一组定义了输入事件和对应响应的属性和方法的结构。您可以使用这些Action来处理游戏中的输入，例如移动、跳跃、攻击等。</p>
+<p>Action Map是一组关联的Action的集合，它们共享相同的输入源和目标设备。例如，您可能会创建一个名为“Player”的Action Map，其中包含控制角色移动的Action，以及名为“UI”的Action Map，其中包含控制菜单导航的Action。通过使用Action Map，您可以轻松地将不同类型的输入分组并组织它们以便于管理。</p>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/unityfpscontroller5/" data-toggle="tooltip" data-placement="top" title="[Unity] ⑤第一人称视角控制器——耐力值系统、门的交互（学习笔记）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

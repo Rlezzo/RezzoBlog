@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C# on Rezzo Blog</title>
+    <link>https://rlezzo.github.io/tags/c#/</link>
+    <description>Recent content in C# on Rezzo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Dec 2021 21:46:58 +0800</lastBuildDate>
+    <atom:link href="https://rlezzo.github.io/tags/c#/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C# IComparable 和 IComparer</title>
+      <link>https://rlezzo.github.io/post/csharpicomparableandicomparer/</link>
+      <pubDate>Thu, 23 Dec 2021 21:46:58 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/csharpicomparableandicomparer/</guid>
+      <description>using System; using System.Collections.Generic; namespace HelloWorldApplication { class HelloWorld { static void Main(string[] args) { Student stu1 = new Student(8, &amp;#34;c&amp;#34;); Student stu2 = new Student(10, &amp;#34;a&amp;#34;); Student stu3 = new Student(24, &amp;#34;b&amp;#34;); List&amp;lt;Student&amp;gt; list = new List&amp;lt;Student&amp;gt;(); list.Add(stu3); list.Add(stu2); list.Add(stu1); foreach(Student stu in list) { Console.WriteLine($&amp;#34;name: {stu.name}; age: {stu.age}&amp;#34;); } Console.WriteLine(&amp;</description>
+    </item>
+  </channel>
+</rss>

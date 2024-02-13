@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记）" />
+    <meta property="og:title" content="[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记）" />
+    <meta property="twitter:title" content="[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记） |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/unityfpscontroller1/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tutorials" title="Tutorials">
+                            Tutorials
+                        </a>
+                        
+                        <a class="tag" href="/tags/unity" title="Unity">
+                            Unity
+                        </a>
+                        
+                    </div>
+                    <h1>[Unity] ①第一人称视角控制器——冲刺、跳跃、蹲伏（学习笔记）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Tuesday, January 25, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p>在油管上找到一个很详细的Unity FPS Controller <a href="https://www.youtube.com/watch?v=2FTDa14nryI&amp;list=PLfhbBaEcybmgidDH3RX_qzFM0mIxWJa21">Unity Tutorial</a>，决定跟着这个系列重新做了。</p>
+<h1 id="第一人称视角移动">第一人称视角移动</h1>
+<p>按照这个教程，修改了一部分代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 是否能够移动</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">bool</span> CanMove { <span style="color:#ff79c6">get</span>; <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">set</span>; } = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 人物移动相关的参数</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Movement Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> walkSpeed = <span style="color:#bd93f9">3.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> gravity = -<span style="color:#bd93f9">9.81f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> isGrounded;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 相机视角相关参数</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Look Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 鼠标X轴速度，Y轴速度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField, Range(1, 100)]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> lookSpeedX = <span style="color:#bd93f9">2.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField, Range(1, 100)]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> lookSpeedY = <span style="color:#bd93f9">2.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField, Range(0, 90)]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> upperLookLimit = <span style="color:#bd93f9">89.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField, Range(0, 90)]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> lowerLookLimit = <span style="color:#bd93f9">89.0f</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 相机和角色控制器变量</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Camera playerCamera;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> CharacterController characterController;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 储存玩家移动速度</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Vector3 moveDirection;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 储存&#34;Horizontal&#34;和&#34;Vertical&#34;输入</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Vector2 moveInput;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 鼠标向下看，相机X轴的旋转角度</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> rotationX;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 存鼠标输入</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> mouseY;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> mouseX;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> Awake()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Camera作为player的子物体</span>
+</span></span><span style="display:flex;"><span>        playerCamera = GetComponentInChildren&lt;Camera&gt;();
+</span></span><span style="display:flex;"><span>        characterController = GetComponent&lt;CharacterController&gt;();
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 锁定电脑光标</span>
+</span></span><span style="display:flex;"><span>        Cursor.lockState = CursorLockMode.Locked;
+</span></span><span style="display:flex;"><span>        Cursor.visible = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>教程分成了移动输入，鼠标观看，还有最终应用移动</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        GroundCheck();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            HandleMovementInput();
+</span></span><span style="display:flex;"><span>            HandleMouseLook();
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>处理移动输入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleMovementInput()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 获得WASD的输入 * speed</span>
+</span></span><span style="display:flex;"><span>        moveInput = <span style="color:#ff79c6">new</span> Vector2(Input.GetAxis(<span style="color:#f1fa8c">&#34;Horizontal&#34;</span>), Input.GetAxis(<span style="color:#f1fa8c">&#34;Vertical&#34;</span>)) * walkSpeed;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// y轴，垂直速度保存下来不动</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> moveDirectionY = moveDirection.y;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 得到三个方向的输入</span>
+</span></span><span style="display:flex;"><span>        moveDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
+</span></span><span style="display:flex;"><span>        moveDirection.y = moveDirectionY;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>处理鼠标输入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleMouseLook()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        mouseX = Input.GetAxis(<span style="color:#f1fa8c">&#34;Mouse Y&#34;</span>) * lookSpeedY * Time.deltaTime;
+</span></span><span style="display:flex;"><span>        mouseY = Input.GetAxis(<span style="color:#f1fa8c">&#34;Mouse X&#34;</span>) * lookSpeedX * Time.deltaTime;
+</span></span><span style="display:flex;"><span>        rotationX -= mouseX;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 左手握成点赞手势，大拇指指向正方向，手指蜷曲方向为正</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 所以最小值是往上看，负数</span>
+</span></span><span style="display:flex;"><span>        rotationX = Mathf.Clamp(rotationX, -upperLookLimit, lowerLookLimit);
+</span></span><span style="display:flex;"><span>        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, <span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 貌似是因为涉及到坐标变化，所以只能用乘法？</span>
+</span></span><span style="display:flex;"><span>        transform.rotation *= Quaternion.Euler(<span style="color:#bd93f9">0</span>, mouseY, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 这个也行</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// transform.Rotate(transform.up * mouseY);</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>处理移动，重力实现详见<a href="https://juejin.cn/post/7052718946662744071">前一篇</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> ApplyFinalMovement()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (!isGrounded)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            moveDirection.y += gravity * Time.deltaTime;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        characterController.Move(moveDirection * Time.deltaTime);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> GroundCheck()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        isGrounded = Physics.CheckSphere(checkGround.position, groundCheckRadius, groundLayer);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (isGrounded &amp;&amp; moveDirection.y &lt; <span style="color:#bd93f9">0.0f</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            moveDirection.y = -<span style="color:#bd93f9">2.0f</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/570fd5b253484350bd94a64568349e76~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+  
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6c785e316a434a4197c1df1ccb4a9268~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="冲刺">冲刺</h1>
+<p>添加</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">bool</span> CanMove { <span style="color:#ff79c6">get</span>; <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">set</span>; } = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 可以冲刺，且按了冲刺键，则进入冲刺状态</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> IsSprinting =&gt; canSprint &amp;&amp; Input.GetKey(sprintKey);
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canSprint = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Controls&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 也可以在unity顶部菜单栏Edit -&gt; Project Setting -&gt; Input Manager 添加一个输入</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode sprintKey = KeyCode.LeftShift;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Movement Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> walkSpeed = <span style="color:#bd93f9">3.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> sprintSpeed = <span style="color:#bd93f9">6.0f</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>float speed = IsSprinting ? sprintSpeed : walkSpeed;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleMovementInput()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> speed = IsSprinting ? sprintSpeed : walkSpeed;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 获得WASD的输入 * speed</span>
+</span></span><span style="display:flex;"><span>        moveInput = <span style="color:#ff79c6">new</span> Vector2(Input.GetAxis(<span style="color:#f1fa8c">&#34;Horizontal&#34;</span>), Input.GetAxis(<span style="color:#f1fa8c">&#34;Vertical&#34;</span>)) * speed;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>也可以加个Input，然后Input.GetButton(&ldquo;Run&rdquo;);
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2b74050b94284426a617260d46de6986~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="跳跃">跳跃</h1>
+<p>private bool ShouldJump =&gt; canJump &amp;&amp; Input.GetKeyDown(jumpKey);
+跳跃功能开启，且按下跳跃键，判断应该执行跳跃</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> ShouldJump =&gt; canJump &amp;&amp; Input.GetKeyDown(jumpKey);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 功能开关</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canJump = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Controls&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode jumpKey = KeyCode.Space;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Jumping Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 最大跳跃次数</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> maxJumpCount = <span style="color:#bd93f9">3</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 目前跳跃次数</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> jumpCount = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 上次跳跃时间</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> lastJumpTime;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 跳跃次数重置冷却时间</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> jumpCoolDownTime = <span style="color:#bd93f9">0.1f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 跳跃高度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> jumpHeight = <span style="color:#bd93f9">5.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> gravity = -<span style="color:#bd93f9">9.81f</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        GroundCheck();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            HandleMovementInput();
+</span></span><span style="display:flex;"><span>            HandleMouseLook();
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 如果跳跃功能开启</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canJump)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// 执行跳跃</span>
+</span></span><span style="display:flex;"><span>                HandleJump();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>因为离地有一小段时间，仍会判断在地面上，所以加一小段时间，防止第一次离地跳跃，不计算使用了跳跃</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleJump()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (ShouldJump &amp;&amp; jumpCount &lt; maxJumpCount)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            moveDirection.y = Mathf.Sqrt(-gravity * <span style="color:#bd93f9">2f</span> * jumpHeight);
+</span></span><span style="display:flex;"><span>            jumpCount++;
+</span></span><span style="display:flex;"><span>            lastJumpTime = Time.time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Time.time - lastJumpTime &gt; jumpCoolDownTime &amp;&amp; isGrounded) jumpCount = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h1 id="蹲伏">蹲伏</h1>
+<h2 id="切换下蹲">切换下蹲</h2>
+<p>网上绝大多数的教程，要么直接不教怎么实现蹲，要么就是通过按键，改变「CharacterControllerd」的「Height」，好一点的加个平滑过度，但是很难找到按住下蹲，松开自动站立的教程。这里先写按「C」切换站立和下蹲的状态。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 当功能开启，且按下「C」键，且不是已经在进行蹲/起立的状态，且在地面上（这可以根据需求决定）</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> ShouldCrouch =&gt; canSwitchCrouch &amp;&amp; Input.GetKeyDown(switchCrouchKey) 
+</span></span><span style="display:flex;"><span>    &amp;&amp; !duringCrouchAnimation &amp;&amp; isGrounded;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 是否开启切换下蹲功能</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canSwitchCrouch = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Controls&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 也可以在unity顶部菜单栏Edit -&gt; Project Setting -&gt; Input Manager 添加一个输入</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode switchCrouchKey = KeyCode.C;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Movement Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 蹲下时的移动速度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> crouchSpeed = <span style="color:#bd93f9">1.0f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Crouch Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 蹲下时的高度与站立的高度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> crouchHeight = <span style="color:#bd93f9">1.35f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> standingHeight = <span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> timeToCrouch = <span style="color:#bd93f9">0.25f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> isCrouching;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> duringCrouchAnimation;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        GroundCheck();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            HandleMovementInput();
+</span></span><span style="display:flex;"><span>            HandleMouseLook();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canJump)
+</span></span><span style="display:flex;"><span>                HandleJump();
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// 如果开启切换下蹲过程，执行下蹲</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canSwitchCrouch)
+</span></span><span style="display:flex;"><span>                HandleCrouch();
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>按下了下蹲，应该下蹲或起立，执行一个协程</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleCrouch()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (ShouldCrouch)
+</span></span><span style="display:flex;"><span>            StartCoroutine(CrouchStand());
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>这个协程做了这些事：</p>
+<p>①判断如果是在蹲的状态下，那么下面就要执行站立，判断头顶有无障碍物，有障碍物就不执行站立</p>
+<p>②根据「isCrouching」判断，如果「isCrouching」为「True」，说明此时是在蹲的状态，那么「targetHeight」则为「standingHeight」站立时的高度</p>
+<p>③获取当前的高度，而「timeElapsed」是一个计时器，后面Lerp平滑站立蹲起的时候用</p>
+<p>④下面就循环执行改变高度的操作，时间从 0 -&gt; timeToCrouch， 按时间的占比，用Mathf.Lerp算出某时刻的高度</p>
+<p>⑤完成高度的改变后，因为会有些误差，所以将高度设定为目标高度</p>
+<p>⑥蹲的状态改变，蹲的动画结束</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> IEnumerator CrouchStand()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (isCrouching &amp;&amp; Physics.Raycast(playerCamera.transform.position, transform.up, <span style="color:#bd93f9">1f</span>)) <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        duringCrouchAnimation = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> timeElapsed = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> targetHeight = isCrouching ? standingHeight : crouchHeight;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> currentHeight = characterController.height;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (timeElapsed &lt; timeToCrouch)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">float</span> chrouchPercentage = timeElapsed / timeToCrouch;
+</span></span><span style="display:flex;"><span>            characterController.height = Mathf.Lerp(currentHeight, targetHeight, chrouchPercentage);
+</span></span><span style="display:flex;"><span>            timeElapsed += Time.deltaTime;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        characterController.height = targetHeight;
+</span></span><span style="display:flex;"><span>        isCrouching = !isCrouching;
+</span></span><span style="display:flex;"><span>        duringCrouchAnimation = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>到此为止，高度可以在设定的「timeToCrouch」时间内平滑匀速过渡。但是摄像头高度不会变化，所以需要改变「Center」的位置，将碰撞体上移。</p>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/49b7e3e5877143e0b901c17cfcea1832~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+ 
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/35eca8512f8a484585dc48e4d1ad14f3~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Crouch Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> crouchHeight = <span style="color:#bd93f9">1.35f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> standingHeight = <span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 下蹲时，碰撞体的中心位置变化</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> timeToCrouch = <span style="color:#bd93f9">0.25f</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> Vector3 crouchingCenter = Vector3.zero;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> Vector3 standingCenter = Vector3.zero;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> isCrouching;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> duringCrouchAnimation;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 地面检测物体和摄像头位置变化</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// changedLength = (standingHeight - crouchHeight) / 2</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> changedDistanceY;
+</span></span></code></pre></div><p>这个crouchingCenter高度，可以实现设定好，我这里在Start()里计算。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Start()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        changedDistanceY = (standingHeight - crouchHeight) / <span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span>        crouchingCenter.Set(standingCenter.x, standingCenter.y + changedDistanceY, standingCenter.z);
+</span></span><span style="display:flex;"><span>changedDistanceY + crouchingCenter.y, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>协程里，也和height一样的操作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> IEnumerator CrouchStand()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (isCrouching &amp;&amp; Physics.Raycast(playerCamera.transform.position, transform.up, <span style="color:#bd93f9">1f</span>)) <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        duringCrouchAnimation = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> timeElapsed = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> targetHeight = isCrouching ? standingHeight : crouchHeight;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> currentHeight = characterController.height;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        Vector3 targetCenter = isCrouching ? standingCenter : crouchingCenter;
+</span></span><span style="display:flex;"><span>        Vector3 currentCenter = characterController.center;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (timeElapsed &lt; timeToCrouch)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">float</span> chrouchPercentage = timeElapsed / timeToCrouch;
+</span></span><span style="display:flex;"><span>            characterController.height = Mathf.Lerp(currentHeight, targetHeight, chrouchPercentage);
+</span></span><span style="display:flex;"><span>            characterController.center = Vector3.Lerp(currentCenter, targetCenter, chrouchPercentage);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            timeElapsed += Time.deltaTime;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        characterController.height = targetHeight;
+</span></span><span style="display:flex;"><span>        characterController.center = targetCenter;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        isCrouching = !isCrouching;
+</span></span><span style="display:flex;"><span>        duringCrouchAnimation = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>这里测试的时候，如果设置成center下移，可能会在站起时穿墙。</p>
+<p>groundCheck的位置跟上移，一样的操作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> Vector3 groundCheckStandingPosition;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> Vector3 groundCheckCrouchPosition;
+</span></span><span style="display:flex;"><span>       <span style="color:#ff79c6">void</span> Start()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 蹲相关数据</span>
+</span></span><span style="display:flex;"><span>        changedDistanceY = (standingHeight - crouchHeight) / <span style="color:#bd93f9">2f</span>;
+</span></span><span style="display:flex;"><span>        crouchingCenter.Set(standingCenter.x, standingCenter.y + changedDistanceY, standingCenter.z);
+</span></span><span style="display:flex;"><span>        groundCheckStandingPosition = <span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, groundCheck.localPosition.y, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>        groundCheckCrouchPosition = <span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, groundCheck.localPosition.y + changedDistanceY + crouchingCenter.y, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">private</span> IEnumerator CrouchStand()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        Vector3 targetGroundCheckPosition = isCrouching ? groundCheckStandingPosition : groundCheckCrouchPosition;
+</span></span><span style="display:flex;"><span>        Vector3 currentGroundCheckPosition = groundCheck.localPosition;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> (timeElapsed &lt; timeToCrouch)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            groundCheck.localPosition = Vector3.Lerp(currentGroundCheckPosition, targetGroundCheckPosition, chrouchPercentage);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            timeElapsed += Time.deltaTime;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">yield</span> <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        groundCheck.localPosition = targetGroundCheckPosition;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        isCrouching = !isCrouching;
+</span></span><span style="display:flex;"><span>        duringCrouchAnimation = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="按住leftctrl下蹲">按住「LeftCtrl」下蹲</h2>
+<p>第二期有更好的解决方法:<a href="https://juejin.cn/post/7063807920944709640">②第一人称视角控制器——开镜、头部摆动、斜面滑落</a></p>
+<p>这个是真找不到好的教程，感觉多少都有点问题，下面是我自己写的，算是没有太大问题吧。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PlayerController</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 功能开关</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canSwitchCrouch = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 按住下蹲开关</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canHoldToCrouch = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Controls&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 也可以在unity顶部菜单栏Edit -&gt; Project Setting -&gt; Input Manager 添加一个输入</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode holdToCrouchKey = KeyCode.LeftControl;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode switchCrouchKey = KeyCode.C;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [Header(&#34;Crouch Parameters&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 下蹲速度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField, Range(50f, 100f)]</span>  <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> crouchStandSpeed = <span style="color:#bd93f9">50f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 蹲姿锁</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> crouchLock;
+</span></span><span style="display:flex;"><span>}   
+</span></span></code></pre></div><p>我分成了两种开关，一种是上面，按C切换蹲和站立的。
+一种是按住下蹲的，也可以同时实现蹲和站立。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        GroundCheck();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            HandleMovementInput();
+</span></span><span style="display:flex;"><span>            HandleMouseLook();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canJump)
+</span></span><span style="display:flex;"><span>                HandleJump();
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canSwitchCrouch || canHoldToCrouch)
+</span></span><span style="display:flex;"><span>                HandleCrouch();
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>① 如果在开始蹲姿锁的情况下，按下了「C」，切换蹲姿，则开关蹲姿锁</p>
+<p>② 如果蹲姿锁开启，但是按下了「leftcontrol」，则关闭蹲姿锁</p>
+<p>③ isCrouching，下蹲状态，由是否按住下蹲，或者 开启了蹲姿锁决定</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleCrouch()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 如果开启按住蹲下，优先按住蹲下的功能</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (canHoldToCrouch)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 如果按下蹲姿切换，则锁开关切换</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (Input.GetKeyDown(switchCrouchKey)) crouchLock = !crouchLock;
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 如果在锁定状态下，按下了保持蹲下键，则锁为关闭状态</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (crouchLock &amp;&amp; Input.GetKeyDown(holdToCrouchKey)) crouchLock = <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 按住保持蹲下键，或者锁定为蹲下，则显示正在蹲伏状态</span>
+</span></span><span style="display:flex;"><span>            isCrouching = Input.GetKey(holdToCrouchKey) || crouchLock;
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 调整身高</span>
+</span></span><span style="display:flex;"><span>            AdjustHeight();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 否则，通过协程进行蹲起</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (ShouldCrouch)
+</span></span><span style="display:flex;"><span>            StartCoroutine(CrouchStand());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>在update里，实时调整身高。</p>
+<p>① 如果目标高度已经是当期高度，则直接返回。</p>
+<p>② 如果当前身高和目标身高误差很小，则直接设定为目标身高</p>
+<p>③ 如果是其它情况，则需要调整身高</p>
+<p>因为是在update里实现，所以计时器不是那么好用，并且还有蹲一半松开「leftcontrol」等情况。</p>
+<p>我尝试了计时器，或者Mathf.SmoothDamp()等方法，都不尽如人意。</p>
+<p>第三个参赛的时刻，使用固定参数或者计时器，或者身高比，都有卡顿或者其他麻烦的情况。</p>
+<p>测试下来，目前设定一个蹲起速度，然后乘上Time.deltaTime还算比较良好。</p>
+<p>Mathf.Lerp(currentHeight, targetHeight, crouchStandSpeed * Time.deltaTime);</p>
+<p>想知道有没有更成熟的实现方法，网上找遍了是在是找不到。</p>
+<p>关于<a href="https://www.jianshu.com/p/8a5341c6d5a6">Lerp和SmoothDamp</a>相关细节可以看看这个。</p>
+<p>简单来说，Lerp就是Mathf.Lerp(a, b, t(0.5)) 假设t取0.5，那么在这一帧，就取(b - a)这段，然后乘以0.5，相当于截取一半，然后新的坐标位置就是 a + 这一半长度，然后，如果拿a + 这一半长度的坐标，作为新的起始点，就会继续取一半，相当于最初的3/4的位置。所以到最后会越来越接近b，但是接近的越来越慢。</p>
+<p>但是取时间的话，就能实现协程里，匀速的变化，而不是这样的减速效果。</p>
+<p>而SmoothDamp，有点类似汽车加速启动，然后减速，最终停止那种平滑感。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> AdjustHeight()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> targetHeight = isCrouching ? crouchHeight : standingHeight;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> currentHeight = characterController.height;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 如果已经一致，返回</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (targetHeight == currentHeight) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Vector3 targetCenter = isCrouching ? crouchingCenter : standingCenter;
+</span></span><span style="display:flex;"><span>        Vector3 currentCenter = characterController.center;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Vector3 targetGroundCheckPosition = isCrouching ? groundCheckCrouchPosition : groundCheckStandingPosition;
+</span></span><span style="display:flex;"><span>        Vector3 currentGroundCheckPosition = groundCheck.localPosition;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Mathf.Abs(targetHeight - currentHeight) &lt; <span style="color:#bd93f9">0.01f</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            characterController.height = targetHeight;
+</span></span><span style="display:flex;"><span>            characterController.center = targetCenter;
+</span></span><span style="display:flex;"><span>            groundCheck.localPosition = targetGroundCheckPosition;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 蹲 -&gt; 站立 过程，如果头上有阻挡，则不能改变身高</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (Physics.Raycast(playerCamera.transform.position, transform.up, <span style="color:#bd93f9">1f</span>) &amp;&amp; !isCrouching) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            characterController.height = Mathf.Lerp(currentHeight, targetHeight, crouchStandSpeed * Time.deltaTime);
+</span></span><span style="display:flex;"><span>            characterController.center = Vector3.Lerp(currentCenter, targetCenter, crouchStandSpeed * Time.deltaTime);
+</span></span><span style="display:flex;"><span>            groundCheck.localPosition = Vector3.Lerp(currentGroundCheckPosition, targetGroundCheckPosition, crouchStandSpeed * Time.deltaTime);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>还有蹲下时的移动速度，在这里改动。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleMovementInput()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> speed = isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Debug.Log(&#34;speed: &#34; + speed);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 获得WASD的输入 * speed</span>
+</span></span><span style="display:flex;"><span>        moveInput = <span style="color:#ff79c6">new</span> Vector2(Input.GetAxis(<span style="color:#f1fa8c">&#34;Horizontal&#34;</span>), Input.GetAxis(<span style="color:#f1fa8c">&#34;Vertical&#34;</span>)) * speed;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// y轴，垂直速度保存下来不动</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">float</span> moveDirectionY = moveDirection.y;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 得到三个方向的输入</span>
+</span></span><span style="display:flex;"><span>        moveDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
+</span></span><span style="display:flex;"><span>        moveDirection.y = moveDirectionY;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/unityfpscontrol/" data-toggle="tooltip" data-placement="top" title="[Unity] 第一人称视角及移动控制">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/unityfpscontroller2/" data-toggle="tooltip" data-placement="top" title="[Unity] ②第一人称视角控制器——开镜、头部摆动、斜面滑落（学习笔记）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

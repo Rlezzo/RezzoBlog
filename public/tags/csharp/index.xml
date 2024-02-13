@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Csharp on Rezzo Blog</title>
+    <link>https://rlezzo.github.io/tags/csharp/</link>
+    <description>Recent content in Csharp on Rezzo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Dec 2021 22:11:28 +0800</lastBuildDate>
+    <atom:link href="https://rlezzo.github.io/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C# 常用排序算法实现</title>
+      <link>https://rlezzo.github.io/post/csharpalogrithm/</link>
+      <pubDate>Thu, 23 Dec 2021 22:11:28 +0800</pubDate>
+      <guid>https://rlezzo.github.io/post/csharpalogrithm/</guid>
+      <description>theme: vuepress 图出处：Leetcode图解算法数据结构 平均时间复杂度O(n^2) 下面排序算法中用到的Swap函数 public void Swap(int[] arr, int a, int b) { // 不能同一个变量，异</description>
+    </item>
+  </channel>
+</rss>

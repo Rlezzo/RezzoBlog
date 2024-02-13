@@ -1,0 +1,3 @@
+[submodule "hugo-theme-cleanwhite"]
+	path = hugo-theme-cleanwhite
+	url = git@github.com:Rlezzo/hugo-theme-cleanwhite.git

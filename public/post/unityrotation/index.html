@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="[Unity]旋转的三种实现方式" />
+    <meta property="og:title" content="[Unity]旋转的三种实现方式" />
+    <meta property="twitter:title" content="[Unity]旋转的三种实现方式" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>[Unity]旋转的三种实现方式 |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/unityrotation/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tutorials" title="Tutorials">
+                            Tutorials
+                        </a>
+                        
+                        <a class="tag" href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                    </div>
+                    <h1>[Unity]旋转的三种实现方式</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Saturday, January 8, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h1 id="transformrotate-欧拉角旋转">Transform.Rotate 欧拉角旋转</h1>
+<h2 id="transformrotatefloat-xangle-float-yangle-float-zangle">Transform.Rotate(float xAngle, float yAngle, float zAngle)</h2>
+<p>「xAngle」以x轴为旋转轴中心每帧旋转的角度</p>
+<p>「yAngle」以y轴为旋转轴中心每帧旋转的角度</p>
+<p>「zAngle」以z轴为旋转轴中心每帧旋转的角度</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update ()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 每一帧，以y轴为旋转轴旋转1°</span>
+</span></span><span style="display:flex;"><span>    transform.Rotate(<span style="color:#bd93f9">0f</span>, <span style="color:#bd93f9">1f</span>, <span style="color:#bd93f9">0f</span>); 
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果是个人物模型，第一人称看到的效果就是一直向右转</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 每帧旋转1°</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左手点赞手势，大拇指指向轴正方向，手指蜷曲方向为旋转正方向</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="transformrotatevector3-eulerangles">Transform.Rotate(Vector3 eulerAngles)</h2>
+<p>用 Vector3 eulerAngles 代替 三个旋转角</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update () 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    transform.Rotate(<span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0f</span>,<span style="color:#bd93f9">1f</span>,<span style="color:#bd93f9">0f</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 每一帧，以y轴为旋转轴旋转1°</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="transformrotatevector3-axis-float-angle-space-relativeto">Transform.Rotate(Vector3 axis, float angle, Space relativeTo)</h2>
+<p>「Vector3 axis」 旋转轴，new Vector3(0f,1f,0f) 就代表以Y轴为旋转轴，值大小不影响旋转速度</p>
+<p>「angle」 每一帧的旋转角度</p>
+<p>「Space relativeTo」相对于本地坐标还是世界坐标</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update () 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    transform.Rotate(<span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0f</span>, <span style="color:#bd93f9">1f</span>, <span style="color:#bd93f9">0f</span>), <span style="color:#bd93f9">1f</span>, Space.Self);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 每一帧，以本地坐标系（自身）y轴为旋转轴，旋转1°</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其它解释按方法注解类推。</p>
+<h1 id="transformrotatearound-一个物体围绕另一个物体旋转">Transform.RotateAround  一个物体围绕另一个物体旋转</h1>
+<h2 id="transformrotatearoundvector3-point-vector3-axis-float-angle">Transform.RotateAround(Vector3 point, Vector3 axis, float angle)</h2>
+<p>「Vector3 point」围绕哪个点旋转</p>
+<p>「Vector3 axis」自身哪个轴围绕这个点旋转</p>
+<p>「angle」每一帧旋转的角度</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update ()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    transform.RotateAround(<span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">0</span>), <span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0f</span>, <span style="color:#bd93f9">1f</span>, <span style="color:#bd93f9">0f</span>), <span style="color:#bd93f9">1f</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// new Vector3(0, 0, 0) 改成自己的position，就可以实现和上面一样的效果</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>个人理解为，空间中一点 point 向 Vector3 axis延长线做追垂线，然后垂线抓住axis，进行旋转。
+打个比方，空间中有一根棍子，记作y轴，然后某一点，向y做垂线，垂线记作z轴，那么以这一点为中心，向x方向做圆周运动。</p>
+<h1 id="直接修改旋转角度">直接修改旋转角度</h1>
+<h2 id="修改欧拉角-eulerangles和localeulerangles">修改欧拉角 eulerAngles和localEulerAngles</h2>
+<p>「eulerAngles」世界坐标系中以欧拉角表示的旋转</p>
+<p>「localEulerAngle」本地坐标中以欧拉角表示的旋转</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update ()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 改变y轴旋转角度30°</span>
+</span></span><span style="display:flex;"><span>    transform.eulerAngles = <span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">30f</span>, <span style="color:#bd93f9">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 旋转至某一角度（有过程）</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">float</span> speed = <span style="color:#bd93f9">5.0f</span>;
+</span></span><span style="display:flex;"><span>    transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, <span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">30f</span>, <span style="color:#bd93f9">0</span>), Time.deltaTime * speed);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="rotation和localrotation">rotation和localRotation</h2>
+<p>四元数用于表示旋转，所有的 rotation都为Quaternion类型，没有Vector3类型的 eulerAngles 直观，但其不受万向锁影响，可以轻松插值运算。</p>
+<p>「rotation」世界坐标系中以四元数表示的旋转</p>
+<p>「localRotation」本地坐标中以四元数表示的旋转</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update () 
+</span></span><span style="display:flex;"><span>{   
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 改变y轴旋转角度30°</span>
+</span></span><span style="display:flex;"><span>    transform.rotation = Quaternion.Euler(<span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">30f</span>, <span style="color:#bd93f9">0</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 旋转至某一角度（有过程）</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">float</span> speed=<span style="color:#bd93f9">10f</span>;        
+</span></span><span style="display:flex;"><span>    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(<span style="color:#ff79c6">new</span> Vector3(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">30f</span>, <span style="color:#bd93f9">0</span>)), Time.deltaTime * speed);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/batrename/" data-toggle="tooltip" data-placement="top" title="[Bat] bat脚本实现文件批量重命名操作">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/unityfpscontrol/" data-toggle="tooltip" data-placement="top" title="[Unity] 第一人称视角及移动控制">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

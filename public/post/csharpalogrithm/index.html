@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="C# 常用排序算法实现" />
+    <meta property="og:title" content="C# 常用排序算法实现" />
+    <meta property="twitter:title" content="C# 常用排序算法实现" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>C# 常用排序算法实现 |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/csharpalogrithm/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/csharp" title="Csharp">
+                            Csharp
+                        </a>
+                        
+                        <a class="tag" href="/tags/alogrithm" title="Alogrithm">
+                            Alogrithm
+                        </a>
+                        
+                    </div>
+                    <h1>C# 常用排序算法实现</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Thursday, December 23, 2021
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+<h2 id="theme-vuepress">theme: vuepress</h2>
+<p>
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bdd259bbac5b483ea2953bae1187e6eb~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+图出处：<a href="https://leetcode-cn.com/leetbook/read/illustration-of-algorithm/pxal47/">Leetcode图解算法数据结构</a></p>
+<h1 id="平均时间复杂度on2">平均时间复杂度O(n^2)</h1>
+<p>下面排序算法中用到的Swap函数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> Swap(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> a, <span style="color:#8be9fd">int</span> b)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 不能同一个变量，异或自身</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 不同的变量，相同的值可以异或</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(a == b) reutrn;
+</span></span><span style="display:flex;"><span>    arr[a] ^= arr[b];
+</span></span><span style="display:flex;"><span>    arr[b] ^= arr[a];
+</span></span><span style="display:flex;"><span>    arr[a] ^= arr[b];
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="冒泡排序">冒泡排序</h2>
+<p>时间复杂度：一趟排序比较n个数，然后是n-1个数，然后是n-2个数，等差数列 n * (n + 1) / 2。O(n^2)</p>
+<p>稳定性：很规律的左右交换，具备稳定性</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">// arr: 需要排序的数组</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// [left，right] 需要排序的数组范围，数组下标</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> BubbleSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果数组元素个数小于2，或者给定范围不合法，直接返回</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> ( arr.Length &lt; <span style="color:#bd93f9">2</span> || left &lt; <span style="color:#bd93f9">0</span> || right &gt; arr.Length - <span style="color:#bd93f9">1</span> || right &lt;= left ) <span style="color:#ff79c6">return</span>;	
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 冒泡的一点优化，提升不了什么性能，聊胜无于</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 默认数组已经有序，假如下面一趟排序，没有发生交换，说明数组已经有序，就可以直接跳出</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">bool</span> isOrderly = <span style="color:#ff79c6">true</span>; 
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span>(right &gt; left) 
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 从最左到右，冒泡，把最大的数一直换到最右边</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">int</span> i = left; i &lt; right; i++)  
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">if</span> (arr[i].CompareTo(arr[i + <span style="color:#bd93f9">1</span>]) &gt; <span style="color:#bd93f9">0</span>)
+</span></span><span style="display:flex;"><span>                        {
+</span></span><span style="display:flex;"><span>                            Swap(arr, i, i + <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>                            <span style="color:#6272a4">// 发生了交换，说明还未完全排好序</span>
+</span></span><span style="display:flex;"><span>                            isOrderly = <span style="color:#ff79c6">false</span>; 
+</span></span><span style="display:flex;"><span>                        }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 数组已经有序，跳出循环		</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (isOrderly)  <span style="color:#ff79c6">break</span>;	
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">//  最大的数已经移动到最右端了，右范围缩小</span>
+</span></span><span style="display:flex;"><span>            right--; 
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="插入排序">插入排序</h2>
+<p>时间复杂度：假设最差情况，逆序。第2个数往前换1个，第3个数往前换2个&hellip; 1 + 2 + 3 + &hellip; + n - 1。也是累加和，n^2</p>
+<p>稳定性：很规律向左一直交换，具备稳定性</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> InsertionSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 至少两个数的数组,左右范围也是合法且至少俩数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (arr.Length &lt; <span style="color:#bd93f9">2</span> || left &lt; <span style="color:#bd93f9">0</span> || right &gt; arr.Length - <span style="color:#bd93f9">1</span> || right &lt;= left) <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 从有序数组右边第一个，未排序的数开始</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 往前交换，直到前面的数比自己小，停止，然后换后面一个数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i = left + <span style="color:#bd93f9">1</span>; i &lt;= right; i++) 
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 这个数比左边的数小，交换，j--</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// j 大于左边界，且小于前一个数，往前换</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> j = i; left &lt; j; j--) 
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span>(arr[j].CompareTo(arr[j - <span style="color:#bd93f9">1</span>]) &lt; <span style="color:#bd93f9">0</span>) Swap(arr, j, j - <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="选择排序">选择排序</h2>
+<p>时间复杂度：选一个位置，后面全部扫一遍，重复所有位置，也是n^2</p>
+<p>稳定性：因为会把前面的数换到后面，所以顺序可能会乱，不具备稳定性</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> SelectionSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 至少两个数的数组,左右范围也是合法且至少俩数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (arr.Length &lt; <span style="color:#bd93f9">2</span> || left &lt; <span style="color:#bd93f9">0</span> || right &gt; arr.Length - <span style="color:#bd93f9">1</span> || right &lt;= left) <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> minIndex;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i = left; i &lt;= right; i++)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// minIndex 记录最小值的下标</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> minIndex = i;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 从初始位置i开始</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 比如从0开始，然后另一个指针j ，从1开始到最后一个数</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 扫描 1 ~ end 末尾的所有数，记录最小的数的下标</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(j = i + <span style="color:#bd93f9">1</span>; j &lt;= right; j++)						
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span>(arr[j].CompareTo(arr[minIndex]) &lt; <span style="color:#bd93f9">0</span>)   minIndex = j;                 
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 将最小的数换到第一位</span>
+</span></span><span style="display:flex;"><span>        Swap(arr, i, minIndex);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="快速排序">快速排序</h2>
+<p>时间复杂度： 有划分，一分二，二分四，一层一层的分解下去。随数据量，划分的复杂度为 log n, 每次扫描一次区域，复杂度为n。所以平均时间复杂度为O(n log n)，最坏的情况，会退化为冒泡，比如不随机找数，或者交换中间的数，然后每次取最右的数为基准，而取的数又是最小或者最大的。但是概率极低，通常按照O(n log n)看待</p>
+<p>稳定性：因为有不确定的前后交换，不具备稳定性</p>
+<h3 id="不带聚集">不带聚集：</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> QuickSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(right - left &lt; <span style="color:#bd93f9">10</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 5~20个元素</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 可以调用插入排序</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 提升效率</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// return;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (left &lt; right)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 取中间的数，作为基准</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 也可以随机取数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 选则最左边作为基准就与左交换，反正与右边交换</span>
+</span></span><span style="display:flex;"><span>            Swap(arr, left, left + ((right - left) &gt;&gt; <span style="color:#bd93f9">1</span>));
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 获得基准的下标，基准左边都是小于等基准的数，右边是大于等于基准的数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> pivotIndex = Partition(arr, left, right);
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 然后递归调用，排序基准左边的范围，右边的范围</span>
+</span></span><span style="display:flex;"><span>            QuickSort(arr, left, pivotIndex - <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>            QuickSort(arr, pivotIndex + <span style="color:#bd93f9">1</span>, right);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Partition(): 将数组划分成 [ 小于等于基准的数 ]  [ 基准 ] [ 大于等于基准的数 ] 这样三块区域，左右两块区域还是乱序</p>
+<h4 id="填坑法">填坑法：</h4>
+<p>以最左数为划分基准</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">// 按基准划分</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 一、填坑法</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> Partition(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 以最左为基准，记录基准的值，这个坑的位置就出来了 </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 先动右边指针，填坑</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> pivot = arr[left];
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (left &lt; right)
+</span></span><span style="display:flex;"><span>   {
+</span></span><span style="display:flex;"><span>       <span style="color:#6272a4">// 当没有越界，且右指针指向的数大于等于基准时，说明这数在大于等于基准的范围，是正确的不需要动</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#6272a4">// 右指针前进（左移）</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[right] &gt;= pivot) right--;
+</span></span><span style="display:flex;"><span>       <span style="color:#6272a4">// 当右指针遇到的数小于基准，就把他换到左边区域的坑里</span>
+</span></span><span style="display:flex;"><span>       arr[left] = arr[right];
+</span></span><span style="display:flex;"><span>       <span style="color:#6272a4">// 左指针重复同样的操作</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[left] &lt;= pivot) left++;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>       arr[right] = arr[left];
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//当循环结束时，l两个指针会重合，停在坑上</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//补坑</span>
+</span></span><span style="display:flex;"><span>    arr[left] = pivot;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> left;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>以最右数为划分基准</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">// 唯一区别就是先动左，还是先动右</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> Partition(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 右基准 先动左边指针，填坑</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> pivot = arr[right];
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (left &lt; right)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[left] &lt;= pivot) left++;
+</span></span><span style="display:flex;"><span>            arr[right] = arr[left];
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[right] &gt;= pivot) right--;
+</span></span><span style="display:flex;"><span>            arr[left] = arr[right];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//当循环结束时，l两个指针会重合，停在坑上</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//补坑</span>
+</span></span><span style="display:flex;"><span>    arr[right] = pivot;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> right;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="交换法">交换法：</h4>
+<p>以最左数为划分基准</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> Partition(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左基准</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 记住左基准的下标，不操作做基准的数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> pivot = left;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span>(left &lt; right)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 一直向左移动，直到遇到比基准小的数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[right] &gt;= arr[pivot]) right--;
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 一直向右移动，直到遇到比基准大的数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[left] &lt;= arr[pivot]) left++;
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 互换</span>
+</span></span><span style="display:flex;"><span>            Swap(arr, left, right);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 将基准换到正中间</span>
+</span></span><span style="display:flex;"><span>    Swap(arr, pivot, left);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左右指针，停止位置永远重合，返回哪个都行</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> left;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>以最右数为划分基准</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">// 交换法</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> Partition(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 右基准</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> pivot = right;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span>(left &lt; right)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[left] &lt;= arr[pivot]) left++;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[right] &gt;= arr[pivot]) right--;
+</span></span><span style="display:flex;"><span>            Swap(arr, left, right);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    Swap(arr, pivot, right);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左右指针，停止位置永远重合，返回哪个都行</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> right;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="带聚集--尾递归">带聚集 + 尾递归：</h3>
+<p>划分过程中：[小于p的区域] [等于p的区域] [  未扫描区域  ] [等于p的区域] [大于p的区域] [p]</p>
+<p>划分为：[小于p的区域] [等于p的区域][大于p的区域]，返回等于p的区域的左右边界</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> QuickSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//if (right - left &lt; 10)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//    //用插排</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//    // return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 这里用while，迭代，右半区间</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (left &lt; right) 
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            Swap(arr, left, left + ((right - left) &gt;&gt; <span style="color:#bd93f9">1</span>) );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> pivotIndex = Partition(arr, left, right);
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 这里是递归</span>
+</span></span><span style="display:flex;"><span>            QuickSort(arr, left, pivotIndex - <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 差别</span>
+</span></span><span style="display:flex;"><span>            left = pivotIndex + <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">	横向，不停的迭代右半区间
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">	(0, 100)  →while→→→ 迭代 →→→→→→→→→→→  （50,100）→→→→→→→→→(76, 100)
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  	  ↓		                         ↓
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">         递归                                  (50, 75) →→→ (64,75)
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">          ↓                                      ↓
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">        (0,49)  →→→→→→(26,49)	                 ↓ 
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">          ↓                                     (50, 63)
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">        (0,25)
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">	  纵向，不停的递归左半区间
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">*/</span>
+</span></span></code></pre></div><p>带聚集的划分，返回左右边界</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span>[] Partition(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 右基准</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> pivot = right;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> leftLen = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 因为右基准不动，右指针又从right开始，所以不算上右基准那一动的长度</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> rightLen = -<span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (left &lt; right)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[left] &lt;= arr[pivot])
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 相同，小于等于长度加一</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">if</span>(arr[left] == arr[pivot]) leftLen++;
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 小于pivot，加入小于区域</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">else</span> Swap(arr, left, left - leftLen);
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 左指针前进</span>
+</span></span><span style="display:flex;"><span>                    left++;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">while</span> (left &lt; right &amp;&amp; arr[right] &gt;= arr[pivot])
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">if</span>(arr[right] == arr[pivot]) rightLen++;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">else</span> Swap(arr, right, right + rightLen);
+</span></span><span style="display:flex;"><span>                    right--;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            Swap(arr, left, right);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 停止位置永远重合</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 因为左指针先动</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果左指针处跳出循环，就是左指针向右碰到右指针，右指针因为在上一轮交换过，则这个位置是大于P的数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果右指针处跳出循环，就是右指针向左碰到左指针，左指针停住的位置，一定是大于P的数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 所以此位置与右基准交换，不会出问题</span>
+</span></span><span style="display:flex;"><span>    Swap(arr, left, pivot);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果没有进第二个循环，pivot 就是最大的</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// [6,4,2,4,3][9]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 第一个循环，左指针一直移动到9，与右指针重合，跳出循环，rightLen没动</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(rightLen == -<span style="color:#bd93f9">1</span>) rightLen = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 返回左右边界位置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[] { left - leftLen, right + rightLen};
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="归并排序">归并排序</h2>
+<p>时间复杂度： 类似快排的分解，但是更均匀，稳定。时间复杂度是比较稳定的O(n log n)</p>
+<p>稳定性：优先放左侧的数，从小到大，从左往右排序合并，具备稳定性</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> MergeSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 如果只有一个数，即left == right</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 或者越界，不进行合并</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (left &gt;= right) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 中点下标</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> mid = left + ((right - left) &gt;&gt; <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 归并排序左半部分</span>
+</span></span><span style="display:flex;"><span>        MergeSort(arr, left, mid);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 右半部分</span>
+</span></span><span style="display:flex;"><span>        MergeSort(arr, mid + <span style="color:#bd93f9">1</span>, right);
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 将排好序的左右两部分，合并成有序的一个部分</span>
+</span></span><span style="display:flex;"><span>        Merge(arr, left, mid, right);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Merge:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> Merge(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> mid, <span style="color:#8be9fd">int</span> right)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 一个临时数组，存放排好序后的结果</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span>[] tmpArr = <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[right - left + <span style="color:#bd93f9">1</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// i用来扫描tmpArr</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> i = <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// left ~ mid 区域的指针</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> leftIndex = left;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// mid + 1 ~ right 区域的指针</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> rightIndex = mid + <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 先把两者重合区域比较完，放进数组</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (leftIndex &lt;= mid &amp;&amp; rightIndex &lt;= right)
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 先放左边的能保证稳定性</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 如果左边的数小于等于右边的数，就放右边的数进临时数组，左边的指针前进，右边的不动</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 反正，放右边的数，左边的指针不动</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 临时数组的指针每次都前进</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 比如 [1, 3] [2, 4] --&gt;  [1, 2, 3, 4] 会按这个顺序放入临时数组</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 因为递归会分解到只有两个数的时候开始进行合并</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 所以从最底层的数组开始，左右都是有序的，因此不会出现大数排到小数前的情况</span>
+</span></span><span style="display:flex;"><span>    tmpArr[i++] = arr[leftIndex] &lt;= arr[rightIndex] ? arr[leftIndex++] : arr[rightIndex++];
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左右两边如果有未比较过的数，那一方一定都大于前面的数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 直接加入</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// left ~ mid</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (leftIndex &lt;= mid) tmpArr[i++] = arr[leftIndex++];
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 右边同理</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// mid + 1 ~ right</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (rightIndex &lt;= right) tmpArr[i++] = arr[rightIndex++];
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 将临时数组中排好序的数据，存回原数组</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 注意 left + i 下标</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> (i = <span style="color:#bd93f9">0</span>; i &lt; tmpArr.Length; i++) arr[left + i] = tmpArr[i];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="堆排序">堆排序</h2>
+<p>时间复杂度 O（N * log N）
+空间复杂度 O(1)
+不稳定</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> HeapSort(<span style="color:#8be9fd">int</span>[] arr)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (arr.Length &lt; <span style="color:#bd93f9">2</span>) <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 从第一个数字开始，到最后一个数字，一个个加入堆，改成大顶堆</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// n * log n</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">int</span> i = <span style="color:#bd93f9">0</span>; i &lt; arr.Length; i++) HeapInsert(arr, i); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//  堆数组，初始个数即为堆大小</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> heapSzie = arr.Length;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 把堆最后一个数，和第一个数交换</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 把这个堆数组中，最大的数移动到最后，heapSzie减一，当做移出堆</span>
+</span></span><span style="display:flex;"><span>    Swap(arr, <span style="color:#bd93f9">0</span>, --heapSzie);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span>(heapSzie &gt; <span style="color:#bd93f9">0</span>) <span style="color:#6272a4">// 堆还有数的时候就重复进行上述操作  O（N）</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 堆化，把换上来数下沉到它应该在的位置</span>
+</span></span><span style="display:flex;"><span>            Heapify(arr, <span style="color:#bd93f9">0</span>, heapSzie);  <span style="color:#6272a4">// O（log N）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">//  再把最大的数放回末尾，移出堆</span>
+</span></span><span style="display:flex;"><span>            Swap(arr, <span style="color:#bd93f9">0</span>, --heapSzie);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> HeapInsert(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> index)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// （index - 1）/ 2，代表父节点的位置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">//  如果这个数的值，比父节点的值大</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span> (arr[index] &gt; arr[(index - <span style="color:#bd93f9">1</span>) / <span style="color:#bd93f9">2</span>])
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 交换上去</span>
+</span></span><span style="display:flex;"><span>            Swap(arr, index, (index - <span style="color:#bd93f9">1</span>) / <span style="color:#bd93f9">2</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 交换上去以后，这个数的index变成父节点的</span>
+</span></span><span style="display:flex;"><span>            index = (index - <span style="color:#bd93f9">1</span>) / <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> Heapify(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> index, <span style="color:#8be9fd">int</span> heapSize)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 左孩子的数组下标</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> leftChild = index * <span style="color:#bd93f9">2</span> + <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">while</span>(leftChild &lt; heapSize)  
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 是否有左孩子（因为堆是完全二叉树结构），没有左孩子一定也没有右孩子，到底了</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 两个左右孩子比较，谁大，把下标记录下来</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 如果，右孩子存在，然后右孩子比左孩子大，记录右孩子，反之，只有左孩子或者左孩子大，记录左孩子</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> largest = leftChild + <span style="color:#bd93f9">1</span> &lt; heapSize &amp;&amp; arr[leftChild + <span style="color:#bd93f9">1</span>] &gt; arr[leftChild] ? leftChild + <span style="color:#bd93f9">1</span> : leftChild;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 然后左右孩子中大的那个，和index比较，记录最大的那个数的下标</span>
+</span></span><span style="display:flex;"><span>            largest = arr[largest] &gt; arr[index] ? largest : index;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// index 大于两个孩子，或者到底了，退出循环</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (largest == index) <span style="color:#ff79c6">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 如果下面有孩子比他大，把孩子换上来，index换下去</span>
+</span></span><span style="display:flex;"><span>            Swap(arr, largest, index);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// index的值，换到了孩子的下标上，从这个下标开始进行下一轮的比较</span>
+</span></span><span style="display:flex;"><span>            index = largest;
+</span></span><span style="display:flex;"><span>            leftChild = index * <span style="color:#bd93f9">2</span> + <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="基数排序">基数排序</h2>
+<p>桶排序的一种，不基于比较的排序</p>
+<p>时间复杂度O(N * d)  每个数，都按最大位数操作 d次，d这里是几位数</p>
+<p>空间复杂度O(N + k)  一个和N一样长度的桶，加一个基数长度的数组，k这里是K进制，十进制比较这里是10（0~9）</p>
+<p>有稳定性</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// 基数排序</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;arr&#34;&gt;数组引用&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;left&#34;&gt;数组左范围下标&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;right&#34;&gt;数组右范围下标&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;digit&#34;&gt;最长几位数&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> RadixSort(<span style="color:#8be9fd">int</span>[] arr, <span style="color:#8be9fd">int</span> left, <span style="color:#8be9fd">int</span> right, <span style="color:#8be9fd">int</span> digit)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 0 ~ 9  10个基数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> radixLen = <span style="color:#bd93f9">10</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> i = <span style="color:#bd93f9">0</span>, j =  <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 桶，每轮比较时临时存数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span>[] bucket = <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[right - left + <span style="color:#bd93f9">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// d代表这一轮，是比较哪一位，1是个位，2是十位...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> d = <span style="color:#bd93f9">1</span>; d &lt;= digit; d++)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 统计这一位，每个数的词频，用累加和记录</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 比如[0, 1, 1, 2, 2, 2, 3, 3, 3, 3]  → count[1, (1 + 2), (3 + 3), (6 + 4)]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 表示该位是0的数，有小于等于1个，该位是3的小于等于10个，分别对应数组下标存放计数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span>[] count = <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[radixLen]; <span style="color:#6272a4">// 0~9 十个位置，记0~9的数</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> (i = left; i &lt;= right; i++)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    j = GetDigit(arr[i], d);
+</span></span><span style="display:flex;"><span>                    count[j]++;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 转换成累加和形式</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> (i = <span style="color:#bd93f9">1</span>; i &lt; radixLen; i++)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    count[i] += count[i - <span style="color:#bd93f9">1</span>];
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 按照统计结果，按该位，从大到小的顺序，放进桶里</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 从后开始读数（因为上一轮排好后，大数在后，小数在前）</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> (i = right; i &gt;= left; i--)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 得到这个要入桶的该位数的值，比如7</span>
+</span></span><span style="display:flex;"><span>                    j = GetDigit(arr[i], d);
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 这个值,7在count[7]中</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// count[7]的值表示小于等于7的数有多少个</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 比如3个，则 3 - 1 = 2，就是说这个7应该在2号下标的位置</span>
+</span></span><span style="display:flex;"><span>                    bucket[count[j] - <span style="color:#bd93f9">1</span>] = arr[i];
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 统计的数减一</span>
+</span></span><span style="display:flex;"><span>                    count[j]--;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 从桶里放回去</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> (i = left, j = <span style="color:#bd93f9">0</span>; i &lt;= right; i++, j++)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    arr[i] = bucket[j];
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// 得到从右往左第d位的数字</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;num&#34;&gt;数&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;param name=&#34;d&#34;&gt;从右往左第几位，个位就是1，十位是2，以此类推&lt;/param&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/// &lt;returns&gt;&lt;/returns&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> GetDigit(<span style="color:#8be9fd">int</span> num, <span style="color:#8be9fd">int</span> d)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(d &lt; <span style="color:#bd93f9">1</span>) <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 将要取的位置的数移动到个位</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#ff79c6">remove</span> = (<span style="color:#8be9fd">int</span>)Math.Pow(<span style="color:#bd93f9">10</span>, d - <span style="color:#bd93f9">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 除10取余</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> (num / <span style="color:#ff79c6">remove</span>) % <span style="color:#bd93f9">10</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/csharpicomparableandicomparer/" data-toggle="tooltip" data-placement="top" title="C# IComparable 和 IComparer">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/mathfclamp/" data-toggle="tooltip" data-placement="top" title="[Unity]Mathf Clamp">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

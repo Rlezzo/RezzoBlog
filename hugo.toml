@@ -1,0 +1,128 @@
+baseURL = 'https://rlezzo.github.io/'
+languageCode = 'en-us'
+title = 'Rezzo Blog'
+theme = 'white'
+
+preserveTaxonomyNames = true
+paginate = 5 #frontpage pagination
+hasCJKLanguage = true
+
+
+[outputs]
+home = ["HTML", "RSS", "Algolia"]
+
+[author]
+  name = "Rezzo"
+  homepage = "https://rlezzo.github.io/"
+[params]
+	reward = false
+	header_image = "img/home-page-title-img.png"
+	SEOTitle = " Rezzo 的博客"
+	description = ""
+	keyword = "Rezzo"
+	slogan = "K-ON！"
+	
+	image_404 = "img/404-bg.png"
+    title_404 = "This is not the web page you are looking for :("
+    omit_categories = false
+	
+    # leancloud storage for page view counter
+    page_view_conter = false 
+    leancloud_app_id = ""
+    leancloud_app_key = ""
+  
+	# algolia site search
+	algolia_search = true
+	algolia_appId = "F209GBVAC8"
+	algolia_indexName = "rezzoblog"
+	algolia_apiKey = "fb09f3eff8999cdb293df2589314323f"
+	  
+	# Sidebar settings
+	sidebar_about_description = "我所能做的就是首先让其接受“现在的自己”，不管结果如何，首先让其树立起向前迈进的勇气。阿德勒心理学把这叫作“鼓励”。"
+	#sidebar_avatar = "img/avatar-zhaohuabing.jpg"      # use absolute URL, seeing it's used in both `/` and `/about/`
+	sidebar_avatar = "img/Hirasawa_yui.jpg"      # use absolute URL, seeing it's used in both `/` and `/about/`
+
+	featured_tags = true 
+	featured_condition_size = 1 
+	
+	# Baidu Analytics
+	ba_track_id = ""
+	  
+	# We need a proxy to access Disqus api in China
+	# Follow https://github.com/zhaohuabing/disqus-php-api to set up your own disqus proxy
+	disqus_proxy = ""
+	disqus_site = ""
+
+	#Enable wechat pay & alipay to allow readers send reward money if they like the articles 
+	reward = true 
+	# reward_guide = "如果这篇文章对你有用,请随意打赏" 
+	  
+	friends = false
+	about_me = true
+	bookmarks = true
+	[params.social]
+	rss            = false
+    email          = "782875367@qq.com"
+    #facebook      = "full profile url in facebook"
+    #googleplus    = "full profile url in googleplus"
+    #twitter       = "full profile url in twitter"
+    #linkedin       = "https://www.linkedin.com/in/yourlinkedinid"
+    #stackoverflow  = "https://stackoverflow.com/users/yourstackoverflowid"
+    #instagram     = "full profile url in instagram"
+    github         = "https://github.com/Rlezzo"
+    #wechat         = "your wechat qr code image"
+    #  medium         = "full profile url in medium"
+    #pinterest     = "full profile url in pinterest"
+    #reddit        = "full profile url in reddit"
+    #gitlab        = "full profile url in gitlab"
+    #mastodon      = "full profile url in mastodon"
+    #keybase       = "full profile url in keybase"
+    #xing          = "https://www.xing.com/profile/yourxingid"
+    #git           = "full profile url for git user"
+	
+	[[params.friend_link]]
+		title = "Linda的博客"
+		href =  "https://zhaozhihan.com"
+
+	# 书签
+	[[params.bookmark_link]]
+		title = "C# 编程指南"
+		href =  "https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/"
+	[[params.bookmark_link]]
+		title =  "Shader for Unity"
+		href = "https://catlikecoding.com/unity/tutorials/"
+	[[params.bookmark_link]]
+		title = "Unity3D中文手册"
+		href = "https://dev.gameres.com/program/unity3dmanual/unity3d.html"
+	[[params.bookmark_link]]
+		title = "GDC"
+		href = "https://gdconf.com/"
+  	[[params.bookmark_link]]
+		title =  "掘金"
+		href =  "https://juejin.cn/"
+		
+	# 导航栏
+	[[params.addtional_menus]]
+		title =  "TALK"
+		href =  "/top/archive/"
+	[[params.addtional_menus]]
+		title =  "ABOUT"
+		href =  "/top/about/"
+		
+		
+	[outputFormats.Algolia]
+		baseName = "algolia"
+		isPlainText = true
+		mediaType = "application/json"
+		notAlternative = true
+	[params.algolia]
+		vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
+		params = ["categories", "tags"] 
+
+	[markup]
+	[markup.tableOfContents]
+		endLevel = 2
+		startLevel = 1
+	[markup.highlight]
+		style = "dracula"
+		

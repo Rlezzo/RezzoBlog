@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSH on Rezzo Blog</title>
+    <link>https://rlezzo.github.io/tags/ssh/</link>
+    <description>Recent content in SSH on Rezzo Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 11 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://rlezzo.github.io/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git SSH 配置</title>
+      <link>https://rlezzo.github.io/post/gitssh/</link>
+      <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://rlezzo.github.io/post/gitssh/</guid>
+      <description>1.查看是否配置过密匙 cd ~/.ssh 不加cd，就是看存不存在 .ssh 文件夹 加cd，如果存在这个文件夹，就直接跳转到这个文件夹 如果不存在这个文件夹，会显示 No such</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Rezzo Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://rlezzo.github.io//img/home-page-title-img.png">
+    <meta property="twitter:image" content="https://rlezzo.github.io//img/home-page-title-img.png" />
+    
+
+    
+    <meta name="title" content="[Unity] ③第一人称视角控制器——交互（学习笔记）" />
+    <meta property="og:title" content="[Unity] ③第一人称视角控制器——交互（学习笔记）" />
+    <meta property="twitter:title" content="[Unity] ③第一人称视角控制器——交互（学习笔记）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="Rezzo">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>[Unity] ③第一人称视角控制器——交互（学习笔记） |  Rezzo 的博客</title>
+
+    <link rel="canonical" href="/post/unityfpscontroller3/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rezzo Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tips/">tips</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive//">TALK</a></li>
+                    
+                        <li><a href="/top/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-page-title-img.png')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tutorials" title="Tutorials">
+                            Tutorials
+                        </a>
+                        
+                        <a class="tag" href="/tags/unity" title="Unity">
+                            Unity
+                        </a>
+                        
+                    </div>
+                    <h1>[Unity] ③第一人称视角控制器——交互（学习笔记）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Rezzo
+                             
+                            on 
+                            Saturday, February 19, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p>前一篇<a href="https://rlezzo.github.io/post/unityfpscontroller2/">[Unity] ②第一人称视角控制器——开镜、头部摆动、斜面滑落（学习笔记）</a></p>
+<p>想要实现的效果：从屏幕准心，发射一条射线，能获取第一个击中的物品的信息，并且在瞄准这个物品，对物品按交互键，视线离开这个物品时，能进行相应的操作。</p>
+<p>思路：</p>
+<h1 id="可交互物品">可交互物品</h1>
+<h2 id="创建抽象类">创建抽象类</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">Interactable</span> : MonoBehaviour
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">virtual</span> <span style="color:#ff79c6">void</span> Awake()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 继承Interactable类的，都划分到“Interactable”层</span>
+</span></span><span style="display:flex;"><span>        gameObject.layer = LayerMask.NameToLayer(<span style="color:#f1fa8c">&#34;Interactable&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 按下交互键时</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#ff79c6">void</span> OnInteract();
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 视线瞄准，选中时</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#ff79c6">void</span> OnFocus();
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 视线脱离后</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#ff79c6">void</span> OnLoseFocus();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="virtual-和-abstract">virtual 和 abstract</h3>
+<p><a href="https://www.cnblogs.com/gygg/p/11556005.html">C#中的虚函数virtual</a></p>
+<pre tabindex="0"><code>virtual和abstract都是用来修饰父类的，通过覆盖父类的定义，让子类重新定义。
+
+-   1.virtual修饰的方法必须有实现（哪怕是仅仅添加一对大括号),而abstract修饰的方法一定不能实现。
+-   2.virtual可以被子类重写，而abstract必须被子类重写。
+-   3.如果类成员被abstract修饰，则该类前必须添加abstract，因为只有抽象类才可以有抽象方法。
+-   4.无法创建abstract类的实例，只能被继承无法实例化。
+</code></pre><pre tabindex="0"><code>-   1.虚方法必须有实现部分，抽象方法没有提供实现部分，抽象方法是一种强制派生类覆盖的方法，否则派生类将不能被实例化。
+-   2.抽象方法只能在抽象类中声明，虚方法不是。如果类包含抽象方法，那么该类也是抽象的，也必须声明类是抽象的。
+-   3.抽象方法必须在派生类中重写，这一点和接口类似，虚方法不需要再派生类中重写。
+</code></pre><p>简单说，抽象方法是需要子类去实现的。虚方法是已经实现了的，可以被子类覆盖，也可以不覆盖，取决于需求。</p>
+<p>抽象方法和虚方法都可以供派生类重写。</p>
+<p>个人理解：加了 virtual 和 abstract 的方法或者类，都可以理解为，提供了一个作文标题。</p>
+<p>而abstract，只有标题，你要交出一篇作文，必须要自己写完内容，哪怕是个空的语句{}。</p>
+<p>而virtual，已经提供了范文内容，你可以直接交上去，也可以自己重新写内容，覆盖掉范文。</p>
+<p>而一个检查声明类的函数，如 &ldquo;A a = new D()&rdquo; 的 &ldquo;a.Fun()&rdquo; 方法，会先检查在 A 的定义中，Fun()方法是否是虚函数，如果不是，直接运行 A 定义的 Fun() 方法，如果是，就看 D 的定义中，是否重写了，如果重写了就用 D 的 Fun() 方法。如果没有重写，就看 D 的父类 C 是否重写了，如果 C 没有就继续往上找，假如都没有重写，最后就运行 A 的 Fun() 方法。</p>
+<h2 id="添加interactable层">添加「Interactable」层</h2>
+<p><a href="https://rlezzo.github.io/post/layerAndLayerMask/">关于 Layer </a></p>
+<p>
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3c851a2541d242cbb96a8d6acc73ddf0~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<h1 id="playercontroller交互功能">PlayerController交互功能</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Functional Options&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">bool</span> canInteract = <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Controls&#34;)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> KeyCode interactKey = KeyCode.F;
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">
+</span></span></span><span style="display:flex;"><span><span style="color:#50fa7b">[Header(&#34;Interaction&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 交互射线的起始点</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> Vector3 interactionRayPoint = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 长度</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">float</span> interactionDistance = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 交互哪一层的对象</span>
+</span></span><span style="display:flex;"><span><span style="color:#50fa7b">    [SerializeField]</span> <span style="color:#8be9fd;font-style:italic">private</span> LayerMask interactionLayer = <span style="color:#ff79c6">default</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 获得交互对象的&lt;Interactable&gt; 组件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Interactable currentInteractable;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">void</span> Update()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        GroundCheck();
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (CanMove)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (canInteract)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                HandleInteractionCheck();
+</span></span><span style="display:flex;"><span>                HandleInteractionInput();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            ApplyFinalMovement();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#6272a4">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/// 判断指向哪个可交互对象</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleInteractionCheck()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// playerCamera.ViewportPointToRay(interactionRayPoint)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// ViewportPointToRay 把你的电脑屏幕/摄像机看到的画面，看做一个坐标系，一个平面</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 左下角为(0, 0)，右上角为(1, 1)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 然后从你眼睛里，比如(0.5, 0.5)，也就是屏幕中心，发射一条射线</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 距离是interactionDistance</span>
+</span></span><span style="display:flex;"><span>        Debug.DrawRay(playerCamera.ViewportPointToRay(interactionRayPoint).origin, playerCamera.ViewportPointToRay(interactionRayPoint).direction * interactionDistance, Color.blue);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), <span style="color:#ff79c6">out</span> RaycastHit hit, interactionDistance, interactionLayer))
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// Debug.DrawRay(hit.transform.position, Vector3.down * 3f, Color.red);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 这里用collider，可交互的物品一般都是实体，或者说要求有实体</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 射线击中可交互物品，且当前没有与其它物品交互，或者从一个可交互物品移动到另一个</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// currentInteractable.GetInstanceID() != hit.collider.gameObject.GetInstanceID()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// if ((1 &lt;&lt; hit.collider.gameObject.layer) == interactionLayer &amp;&amp; (currentInteractable == null || currentInteractable.GetInstanceID() != hit.collider.gameObject.GetInstanceID()))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (currentInteractable == <span style="color:#ff79c6">null</span> || currentInteractable.GetInstanceID() != hit.collider.gameObject.GetInstanceID())
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// 不为空，那就是换物品了，先失焦</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> (currentInteractable != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>                    currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// 获取Component&lt;Interactable&gt;， 给currentInteractable变量</span>
+</span></span><span style="display:flex;"><span>                hit.collider.TryGetComponent&lt;Interactable&gt;(<span style="color:#ff79c6">out</span> currentInteractable);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// 如果存在&lt;Interactable&gt;组件</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>                    <span style="color:#6272a4">// 执行聚焦方法</span>
+</span></span><span style="display:flex;"><span>                    currentInteractable.OnFocus();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 如果没有击中可交互物品，但是仍绑定了某个可交互物品</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// 执行失焦方法</span>
+</span></span><span style="display:flex;"><span>            currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span>            currentInteractable = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/// 判断交互操作</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleInteractionInput()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 一、按下交互键</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 二、存在可交互对象</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 击中某个可交互物品</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Input.GetKeyDown(interactKey) &amp;&amp; currentInteractable != <span style="color:#ff79c6">null</span> &amp;&amp; Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), <span style="color:#ff79c6">out</span> RaycastHit hit, interactionDistance, interactionLayer))
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentInteractable.OnInteract();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>精简：</p>
+<p>首先，从摄像机，也就是你屏幕的(0.5, 0.5)中心位置，发射一条射线，长度为2，检测指定层，这里是「Interactable」层。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), 
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">out</span> RaycastHit hit, interactionDistance, interactionLayer)
+</span></span></code></pre></div><p>
+  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/39655197b5d34cfc860549866a440d7d~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+然后判断，当前绑定的可交互对象，是否为射线击中的对象。未绑定，或者指向了其它可交互对象，就执行下面的代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ff79c6">if</span> (currentInteractable == <span style="color:#ff79c6">null</span> || currentInteractable.GetInstanceID() !=
+</span></span><span style="display:flex;"><span>hit.collider.gameObject.GetInstanceID())
+</span></span></code></pre></div><p>一般游戏里，都是聚焦可交互物品，然后物品周围一圈被高亮。我这里是指向就变红。
+
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/796c9240c8cc43f8b878688d24010a11~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#6272a4">// 如果为不为空，那就执行视线脱离前一个物品，前一个物品应该执行的方法。</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> (currentInteractable != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>    currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 获取当期可交互物品的「Interactable」组件</span>
+</span></span><span style="display:flex;"><span>hit.collider.TryGetComponent&lt;Interactable&gt;(<span style="color:#ff79c6">out</span> currentInteractable);
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 绑定成功，执行聚焦该物品时，应该执行的方法</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>    currentInteractable.OnFocus();
+</span></span></code></pre></div><p>如果没有命中可交互物品，但是仍绑定有可交互物品，执行失焦方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span>            currentInteractable = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span></code></pre></div><p>完整：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleInteractionCheck()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), 
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">out</span> RaycastHit hit, interactionDistance, interactionLayer))
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (currentInteractable == <span style="color:#ff79c6">null</span> || 
+</span></span><span style="display:flex;"><span>            currentInteractable.GetInstanceID() != hit.collider.gameObject.GetInstanceID())
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> (currentInteractable != <span style="color:#ff79c6">null</span>)
+</span></span><span style="display:flex;"><span>                    currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                hit.collider.TryGetComponent&lt;Interactable&gt;(<span style="color:#ff79c6">out</span> currentInteractable);
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>                    currentInteractable.OnFocus();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (currentInteractable)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentInteractable.OnLoseFocus();
+</span></span><span style="display:flex;"><span>            currentInteractable = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>执行交互操作：
+按下交互键，且有可交互对象，且射线命中可交互物品。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Input.GetKeyDown(interactKey) &amp;&amp; currentInteractable != <span style="color:#ff79c6">null</span> &amp;&amp; Physics.Raycast()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">void</span> HandleInteractionInput()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (Input.GetKeyDown(interactKey) &amp;&amp; currentInteractable != <span style="color:#ff79c6">null</span> &amp;&amp;
+</span></span><span style="display:flex;"><span>        Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), 
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">out</span> RaycastHit hit, interactionDistance, interactionLayer))
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            currentInteractable.OnInteract();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h1 id="实现可交互物品">实现可交互物品</h1>
+<p>
+  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4e84d36bc03c4c1db1b5e8f01a3c212a~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+创建一个CubeInteractable子类，继承自Interactable抽象类。填上对应的方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">CubeInteractable</span> : Interactable
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">override</span> <span style="color:#ff79c6">void</span> OnFocus()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Debug.Log(&#34;Looking At: &#34; + gameObject.name);</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">override</span> <span style="color:#ff79c6">void</span> OnInteract()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Debug.Log(&#34;Interacted with: &#34; + gameObject.name);</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">override</span> <span style="color:#ff79c6">void</span> OnLoseFocus()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Debug.Log(&#34;Stopped Looking At: &#34; + gameObject.name);</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后创建两个CUBE：</p>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/68c7188714b74163b911acc141237bf6~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+
+
+  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/96d571d4eec24f94a930eddf2a1b8091~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>
+  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d896ad8e05854d13831b5465cd1055bb~tplv-k3u1fbpfcp-watermark.image?" alt="image.png">
+
+</p>
+<p>一定要有collider，因为射线需要命中实体。
+然后就可以进行正常的交互了。</p>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://rlezzo.github.io/"><img src="/img/favicon.png" />Rezzo Blog</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/unityfpscontroller2/" data-toggle="tooltip" data-placement="top" title="[Unity] ②第一人称视角控制器——开镜、头部摆动、斜面滑落（学习笔记）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/layerandlayermask/" data-toggle="tooltip" data-placement="top" title="[Unity]Layer &amp; LayerMask 简述">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/blog" title="blog">
+                            blog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tutorials" title="tutorials">
+                            tutorials
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/unity" title="unity">
+                            unity
+                        </a>
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:782875367@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Rlezzo">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Rezzo Blog 2024
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

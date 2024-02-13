@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+{{ partial "head.html" . }}
+{{ partial "nav.html" . }}
+<!-- Page Header -->
+{{ block "header" .}}
+<header class="intro-header" style="background-image: url('{{ .Site.Params.header_image | relURL }}'); background-size: cover; background-position: center 20%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-4 col-md-10 col-md-offset-2 "> <!-- Adjusted offset -->
+                <div class="site-heading" style="position: relative;">
+                    <h1 style="opacity: 0.5; position: absolute; right: 10%; bottom: 60px;">{{ .Site.Title}} </h1> <!-- Adjusted bottom position -->
+                    <!--<hr class="small">-->
+		    <span class="subheading" style="opacity: 0.5; position: absolute; right: 10%; bottom: 30px;">{{ .Site.Params.slogan }}</span> <!-- Adjusted bottom position -->
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{{ end }}
+
+{{ block "main" . }}
+{{ end }}
+
+{{ partial "footer.html" . }}
+</body>
+</html>
