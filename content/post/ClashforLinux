@@ -1,0 +1,116 @@
+环境：DeBian 11.3
+
+参考[在 Linux 下使用 Clash 进行全局上网代理及自动订阅代理和规则 - 薯条的博客 (robinxb.com)](https://robinxb.com/posts/2023/clash-on-linux/)
+## 准备工作
+
+1.  从以下备份库下载 Clash Premium:
+
+    由于 Clash Premium 的主库已被删除，我们将使用备份库来获取吧。  
+    [Clash-premium-backup](https://github.com/zhongfly/Clash-premium-backup/releases/download/2023-09-05-gdcc8d87/clash-linux-amd64-n2023-09-05-gdcc8d87.gz)
+
+## 安装和配置
+
+1.  解压下载的文件：
+
+```bash
+gzip -d clash-linux-amd64-n2023-09-05-gdcc8d87.gz
+chmod +x clash-linux-amd64
+mv clash-linux-amd64 clash
+```
+
+2.  创建配置文件 config.yaml，并编辑配置：
+
+我这里直接把windows机场的配置文件拷过来了，然后改名为config.yaml。
+
+## 测试和运行
+
+**运行 Clash:**
+
+```
+./clash -f /path/to/your/config.yml 
+```
+
+注意：请替换 `/path/to/your/config.yml` 为你的实际配置文件路径。
+
+### 初次运行
+```bash
+rezzo@iZmhZ:~/ClashforLinux$ ./clash -f config.yml 
+17:21:30 INF [MMDB] can't find DB, start download path=/home/rezzo/.config/clash/Country.mmdb
+17:22:00 FTL [Config] initial configuration directory error=can't initial MMDB: can't download MMDB: Get "https://cdn.jsdelivr.net/gh/Dreamacro/maxmind-geoip@release/Country.mmdb": dial tcp 93.46.8.90:443: i/o timeout path=/home/rezzo/.config/clash
+```
+报错，网络问题，手动在其他终端用上面的cdn的地址下载完成后，放入/home/rezzo/.config/clash/Country.mmdb他说的位置。
+
+### 再次运行
+```bash
+rezzo@iZmh4Z:~/ClashforLinux$ ls
+clash  config.yml  update-config.sh
+rezzo@iZmh40dsro8b12Z:~/ClashforLinux$ ./clash -f config.yml 
+17:25:28 INF [Config] initial compatible provider name=♻️ 自动选择
+17:25:28 INF [Config] initial compatible provider name=🌏 国内媒体
+```
+成功加载配置
+### 自动更新机场配置文件
+```bash
+rezzo@iZmh40:~/ClashforLinux$ cat update-config.sh 
+#!/bin/bash
+
+# 替换为你的 Clash 外部控制器地址和端口
+CLASH_API="http://127.0.0.1:9090"
+
+# 替换为你的配置文件 URL
+CONFIG_URL="你的！正规合法！机场配置文件下载地址"
+
+# 下载最新的配置文件
+curl -s -o config.yml "$CONFIG_URL"
+
+# 使用 Clash API 更新配置
+curl -s -X PUT --data-binary @config.yml -H "Content-Type: application/x-yml" "$CLASH_API/configs?force=true"
+```
+## 测试代理
+现在应该可以通过代理端口访问了
+```
+curl -x http://127.0.0.1:7890 -L google.com
+```
+如果直接访问而不走代理端口是无法访问的
+
+## clash开机自启和定时更新配置文件
+**clash开机自启**
+
+添加服务
+```
+sudo vim /etc/systemd/system/clash.service
+```
+如下填写
+```
+[Unit]
+Description=Clash Proxy Service
+After=network.target
+
+[Service]
+Type=simple
+User=你的用户名
+ExecStart=/路径/to/clash -f /路径/to/config.yml
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+启用服务
+```
+sudo systemctl start clash
+sudo systemctl enable clash
+```
+**更新配置文件定时任务**
+```
+crontab -e
+```
+添加如凌晨3点更新
+```
+0 3 * * * /路径/to/update-config.sh
+```
+## 系统代理应用代理自行搜索
+# 注意事项
+1.  确保遵守您所在地区的法律法规。
+1.  代理服务器的使用应出于合法和正当目的。
+1.  本教程仅供教育和学习交流，请勿用于非法活动。
